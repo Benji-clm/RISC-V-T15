@@ -17,12 +17,11 @@ module reg_file #(
     logic [WIDTH-1:0] registers [0:DEPTH-1],
     assign registers[0] = {WIDTH-1{1'b0}};
     
+    // Read operations
+    assign RD1 = registers[rs1];
+    assign RD2 = registers[rs2];
 
     always_ff @(posedge clk)
-        // Read operations
-        assign RD1 = registers[rs1];
-        assign RD2 = registers[rs2];
-        
         // Write operations
         if(RegWrite) assign register[rd] = ALUOUT;
     
