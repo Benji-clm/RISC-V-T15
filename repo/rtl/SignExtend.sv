@@ -1,15 +1,15 @@
-module SignExtend (
-    input logic [31:0] ImmOp,           
+module signextend (
+    input logic [31:0] instr,           
     input logic [1:0] ImmSrc,           
-    output logic [31:0] imm_ext
+    output logic [31:0] ImmOp
 );
 
     always_comb begin
         case (ImmSrc)
-            2'b00: imm_ext = {{20{ImmOp[31]}}, ImmOp[31:20]};              // I-type (12-bit signed immediate)
-            2'b01: imm_ext = {{20{ImmOp[31]}}, ImmOp[31:25], ImmOp[11:7]};   // S-type (split 12-bit signed immediate)
-            2'b10: imm_ext = {{19{ImmOp[31]}}, ImmOp[31], ImmOp[0], ImmOp[30:25], ImmOp[4:1], 1'b0}; // B-type (branch offset)
-            default: imm_ext = 32'b0;                                       // Default case for unsupported formats
+            2'b00: ImmOp = {{20{instr[31]}}, instr[31:20]};              // I-type (12-bit signed immediate)
+            2'b01: ImmOp = {{20{instr[31]}}, instr[31:25], instr[11:7]};   // S-type (split 12-bit signed immediate)
+            2'b10: ImmOp = {{20{instr[31]}}, instr[7], instr[30:25], instr[11:8], 1'b0}; // B-type (branch offset)
+            default: ImmOp = 32'b0;                                       // Default case for unsupported formats
         endcase
     end
 
