@@ -1,4 +1,4 @@
-module signextend (
+module SignExtend (
     input logic [31:0] instr,           
     input logic [1:0] ImmSrc,           
     output logic [31:0] ImmOp

@@ -4,6 +4,10 @@
 
 #include "base_testbench.h"
 
+Vdut *top;
+VerilatedVcdC *tfp;
+unsigned int ticks = 0;
+
 class SignExtendTestbench : public BaseTestbench
 {
 protected:
@@ -48,9 +52,21 @@ TEST_F(SignExtendTestbench, BtypeWroks)
 
 int main(int argc, char **argv)
 {
-    Verilated::commandArgs(argc, argv);
+    top = new Vdut;
+    tfp = new VerilatedVcdC;
+
+    Verilated::traceEverOn(true);
+    top->trace(tfp, 99);
+    tfp->open("waveform.vcd");
+
     testing::InitGoogleTest(&argc, argv);
     auto res = RUN_ALL_TESTS();
+
+    top->final();
+    tfp->close();
+
+    delete top;
+    delete tfp;
 
     return res;
 }
