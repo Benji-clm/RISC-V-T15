@@ -14,16 +14,14 @@ module reg_file #(
 );
 
     // Register array
-    logic [WIDTH-1:0] registers [0:DEPTH-1],
-    assign registers[0] = {WIDTH-1{1'b0}};
-    
-    // Read operations
-    assign RD1 = registers[rs1];
-    assign RD2 = registers[rs2];
+    logic [WIDTH-1:0] registers [0:DEPTH-1];
+
+    assign RD1 = (ad1 != 0) ? registers[ad1] : 0;
+    assign RD2 = (ad2 != 0) ? registers[ad2] : 0;
 
     always_ff @(posedge clk)
         // Write operations
-        if(RegWrite) assign register[rd] = ALUOUT;
+        if(RegWrite) registers[as3] <= WD;
     
 
     
