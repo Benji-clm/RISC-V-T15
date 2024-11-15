@@ -47,5 +47,5 @@ git checkout master
 
 You're all set! Now you just need to use `git push` every time you want to push your commits onto the GitHub.
 
-
+> **DO NOT FORGET** `git pull` before trying to add and commit files/changes, else it might cause bugs.
 
