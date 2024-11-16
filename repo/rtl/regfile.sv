@@ -24,7 +24,7 @@ module regfile #(
     assign rd2 = registers[rs2];
 
     // Write data
-    always_ff @(posedge clk or posedge rst) begin
+    always_ff @(posedge clk) begin
         if (rst) begin
             // Reset all registers
             for (int i = 0; i < DEPTH; i++) begin
@@ -34,5 +34,6 @@ module regfile #(
             registers[rd] <= ALUout; // Write to destination register
         end
     end
+
 
 endmodule

@@ -64,6 +64,9 @@ always_comb begin
             ALUOp = 2'b01;
         end
 
+        default: begin
+        end
+
     endcase
     
 end

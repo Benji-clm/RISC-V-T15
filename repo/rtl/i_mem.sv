@@ -6,12 +6,12 @@ module i_mem #(
     output  logic [DATA_WIDTH-1:0]      instr    
 );
 
-logic [DATA_WIDTH-1:0] array [2**ADDRESS_WIDTH-1:0];
+logic [7:0] array [0:2**ADDRESS_WIDTH-1]; // Byte-addressable memory
 
 initial begin
 		$display("Loading program into instruction memory...");
-		$readmemh("program.hex", array);
-end;
+		$readmemh("../rtl/program.hex", array);
+end
 
 assign instr = {array[pc+3], array[pc+2], array[pc+1], array[pc]};
 

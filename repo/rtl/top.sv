@@ -9,20 +9,30 @@ module top #(
 
     assign a0 = 5;
 
-
+    /* verilator lint_off UNUSEDSIGNAL */
     logic [ADDRESS_WIDTH-1:0]   pc, next_PC;
     logic [DATA_WIDTH-1:0]      ImmOp, instr, ALUop1, regOp2, ALUop2, ALUout;
     logic                       PCsrc, ResultSrc, MemWrite, ALUSrc, RegWrite, eq;
     logic [2:0]                 ALUctrl;
     logic [1:0]                 ImmSrc;
     logic [4:0]                 rs1, rs2, rd;
+    /* verilator lint_on UNUSEDSIGNAL */
 
-    always_ff @ (posedge clk, posedge rst) begin
-        if (rst) 
-            pc <= {ADDRESS_WIDTH{1'b0}};
-        else 
-            pc <= next_PC;
+    always_comb begin
+        next_PC = pc + 16'h1; // Increment PC by 1
     end
+
+
+    always_ff @(posedge clk) begin
+        if (rst)
+            pc <= {ADDRESS_WIDTH{1'b0}};  // Reset pc to zero
+        else if (PCsrc)
+            pc <= pc + ImmOp[ADDRESS_WIDTH-1:0];             // Branch address computation directly
+        else
+            pc <= next_PC;                // Default behavior: Increment PC
+    end
+
+
     counter #(ADDRESS_WIDTH) pc_counter (
         .clk(clk),              // Connect the clock signal
         .rst(rst),              // Connect the reset signal
