@@ -1,5 +1,7 @@
 module SignExtend (
-    input logic [31:0] instr,           
+    /* verilator lint_off UNUSEDSIGNAL */
+    input logic [31:0] instr,
+    /* verilator lint_on UNUSEDSIGNAL */           
     input logic [1:0] ImmSrc,           
     output logic [31:0] ImmOp
 );
