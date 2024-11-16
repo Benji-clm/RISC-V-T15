@@ -25,7 +25,7 @@ module top #(
     end
     pc #(ADDRESS_WIDTH) pc_counter(
         .branch_PC(pc + ImmOp),
-        .inc_pc(pc + ADDRESS_WIDTH'd4),
+        .inc_pc(pc + {ADDRESS_WIDTH{1'b0}} + 4)
         .PCsrc(PCsrc),
         .next_PC(next_PC)
     );
