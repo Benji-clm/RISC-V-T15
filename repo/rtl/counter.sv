@@ -5,7 +5,7 @@ module counter #(
     //interface signal
     input logic         clk,   //clock
     input logic         rst,   //reset
-    input logic [DTA_WIDTH-1:0] next_PC,  //increment 16 bit number
+    input logic [DATA_WIDTH-1:0] next_PC,  //increment 16 bit number
     //input logic         en,    //counter enable, we dont need enable for Lab4
     output logic [DATA_WIDTH-1:0] p_count//count output 
 );

@@ -3,9 +3,9 @@ module reg_file #(
     parameter DEPTH = 32   // Number of registers
 )(
     input logic             clk,        // Clock
-    input logic [4:0]       ad1,        // Source register 1 address
-    input logic [4:0]       ad2,        // Source register 2 address
-    input logic [4:0]       as3,
+    input logic [3:0]       ad1,        // Source register 1 address
+    input logic [3:0]       ad2,        // Source register 2 address
+    input logic [3:0]       as3,
     input logic             RegWrite,   // Register write enable
     input logic [WIDTH-1:0] ALUOUT,
     input logic [WIDTH-1:0] WD,         // Write data
