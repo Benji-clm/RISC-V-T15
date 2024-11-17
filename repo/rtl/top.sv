@@ -17,7 +17,7 @@ module top #(
     logic [4:0]                 rs1, rs2, rd;
 
     always_comb begin
-        next_PC = pc + 16'h1; // Increment PC by 1
+        next_PC = pc + 16'h4; // Increment PC by 1
     end
 
 
