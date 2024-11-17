@@ -2,7 +2,7 @@ module alu #(
     DATA_WIDTH = 32
 )(
     input  logic [DATA_WIDTH-1:0] in1, in2,
-    input  logic [2:0]            ALUCtrl,
+    input  logic [2:0]            ALUctrl,
     output logic [DATA_WIDTH-1:0] ALUout,
     output logic                  eq
 );
@@ -14,7 +14,7 @@ assign op1_signed = in1;
 assign op2_signed = in2;
 
 always_comb begin
-    case(ALUCtrl)
+    case(ALUctrl)
         3'b000: ALUout = in1 + in2; // addition
         3'b001: ALUout = in1 - in2; // substraction
         3'b010: ALUout = in1 & in2; // and

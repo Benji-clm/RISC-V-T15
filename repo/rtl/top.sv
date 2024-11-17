@@ -93,7 +93,6 @@ module top #(
 
     // ALU Logic
     alu #(DATA_WIDTH) alu_ (
-        .clk(clk),                // Clock signal
         .in1(ALUop1),             // Operand 1
         .in2(ALUop2),             // Operand 2
         .ALUctrl(ALUctrl),        // ALU control signals
