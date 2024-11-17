@@ -8,39 +8,47 @@ Vdut *top;
 VerilatedVcdC *tfp;
 unsigned int ticks = 0;
 
-class MuxTestbench : public BaseTestbench
+class SignExtendTestbench : public BaseTestbench
 {
 protected:
     void initializeInputs() override
     {
-        top->sel = 0;
-        top->in0 = 0;
-        top->in1 = 0;
-        // output: out
+        top->instr = 0x0;
+        top->ImmSrc = 0x0;
+        // output: imm_ext
     }
 };
 
-TEST_F(MuxTestbench, Mux0WorksTest)
+TEST_F(SignExtendTestbench, StypeWorks)
 {
-    top->sel = 0;
-    top->in0 = 1;
-    top->in1 = 0;
+    top->instr = 0xFF807890;
+    top->ImmSrc = 0x1;
 
     top->eval();
 
-    EXPECT_EQ(top->out, 1);
+    EXPECT_EQ(top->ImmOp, 0xFFFFFFF1);
 }
 
-TEST_F(MuxTestbench, Mux1WorksTest)
+TEST_F(SignExtendTestbench, ItypeWroks)
 {
-    top->sel = 1;
-    top->in0 = 0;
-    top->in1 = 1;
+    top->instr = 0xFFF0A123;
+    top->ImmSrc = 0x0;
 
     top->eval();
 
-    EXPECT_EQ(top->out, 1);
+    EXPECT_EQ(top->ImmOp, 0xFFFFFFFF);
 }
+
+TEST_F(SignExtendTestbench, BtypeWroks)
+{
+    top->instr = 0x80000000;
+    top->ImmSrc = 0x2;
+
+    top->eval();
+
+    EXPECT_EQ(top->ImmOp, 0xFFFFF000);
+}
+
 
 int main(int argc, char **argv)
 {

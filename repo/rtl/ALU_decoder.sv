@@ -1,7 +1,5 @@
 module ALU_decoder (
-    /* verilator lint_off UNUSEDSIGNAL */
     input  logic [6:0]       op,
-    /* verilator lint_on UNUSEDSIGNAL */
     input  logic [2:0]       funct3,
     input  logic             funct7,
     input  logic [1:0]       ALUOp,

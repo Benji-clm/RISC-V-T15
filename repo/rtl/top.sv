@@ -9,14 +9,12 @@ module top #(
 
     assign a0 = 5;
 
-    /* verilator lint_off UNUSEDSIGNAL */
     logic [ADDRESS_WIDTH-1:0]   pc, next_PC;
     logic [DATA_WIDTH-1:0]      ImmOp, instr, ALUop1, regOp2, ALUop2, ALUout;
     logic                       PCsrc, ResultSrc, MemWrite, ALUSrc, RegWrite, eq;
     logic [2:0]                 ALUctrl;
     logic [1:0]                 ImmSrc;
     logic [4:0]                 rs1, rs2, rd;
-    /* verilator lint_on UNUSEDSIGNAL */
 
     always_comb begin
         next_PC = pc + 16'h1; // Increment PC by 1

@@ -1,9 +1,8 @@
 module control_unit #(
     parameter DATA_WIDTH = 32
 )(  
-    /* verilator lint_off UNUSEDSIGNAL */
     input  logic [DATA_WIDTH-1:0] instr,
-    /* verilator lint_on UNUSEDSIGNAL */
+
     input  logic                  zero,
     output logic                  PCSrc,
     output logic                  ResultSrc,
