@@ -8,47 +8,93 @@ Vdut *top;
 VerilatedVcdC *tfp;
 unsigned int ticks = 0;
 
-class SignExtendTestbench : public BaseTestbench
+class ALUTestbench : public BaseTestbench
 {
 protected:
     void initializeInputs() override
     {
-        top->instr = 0x0;
-        top->ImmSrc = 0x0;
-        // output: imm_ext
+        top->in1 = 0x0;
+        top->in2 = 0x0;
+        top->ALUCtrl = 0x0;
+        // output: ALUout & eq
     }
 };
 
-TEST_F(SignExtendTestbench, StypeWorks)
+TEST_F(ALUTestbench, AddWorksTest)
 {
-    top->instr = 0xFF807890;
-    top->ImmSrc = 0x1;
+    top->ALUCtrl = 0x0;
+    top->in1 = 0x00000001;
+    top->in2 = 0x00000004;
 
     top->eval();
 
-    EXPECT_EQ(top->ImmOp, 0xFFFFFFF1);
+    EXPECT_EQ(top->ALUout, 0x00000005);
+    EXPECT_EQ(top->eq, 0x0);
 }
 
-TEST_F(SignExtendTestbench, ItypeWroks)
+TEST_F(ALUTestbench, SubWorksTest)
 {
-    top->instr = 0xFFF0A123;
-    top->ImmSrc = 0x0;
+    top->ALUCtrl = 0x1;
+    top->in1 = 0x00000011;
+    top->in2 = 0x00000001;
 
     top->eval();
 
-    EXPECT_EQ(top->ImmOp, 0xFFFFFFFF);
+    EXPECT_EQ(top->ALUout, 0x00000010);
+    EXPECT_EQ(top->eq, 0x0);
 }
 
-TEST_F(SignExtendTestbench, BtypeWroks)
+TEST_F(ALUTestbench, AndWorksTest)
 {
-    top->instr = 0x80000000;
-    top->ImmSrc = 0x2;
+    top->ALUCtrl = 0x2;
+    top->in1 = 0x00400011;
+    top->in2 = 0x00400001;
 
     top->eval();
 
-    EXPECT_EQ(top->ImmOp, 0xFFFFF000);
+    EXPECT_EQ(top->ALUout, 0x00400001);
+    EXPECT_EQ(top->eq, 0x0);
+
+    top->in1 = 0x000FF000;
+    top->in2 = 0x00000001;
+
+    top->eval();
+
+    EXPECT_EQ(top->ALUout, 0x00000000);
+    EXPECT_EQ(top->eq, 0x1);
 }
 
+TEST_F(ALUTestbench, OrWorksTest)
+{
+    top->ALUCtrl = 0x3;
+    top->in1 = 0x00010011;
+    top->in2 = 0x000F0001;
+
+    top->eval();
+
+    EXPECT_EQ(top->ALUout, 0x000F0011);
+    EXPECT_EQ(top->eq, 0x0);
+}
+
+TEST_F(ALUTestbench, SLTWorksTest)
+{
+    top->ALUCtrl = 0x5;
+    top->in1 = 0x00000011;
+    top->in2 = 0x00000001;
+
+    top->eval();
+
+    EXPECT_EQ(top->ALUout, 0x0);
+    EXPECT_EQ(top->eq, 0x1);
+
+    top->in1 = 0x00000011;
+    top->in2 = 0x000F0001;
+
+    top->eval();
+
+    EXPECT_EQ(top->ALUout, 0x1);
+    EXPECT_EQ(top->eq, 0x0);
+}
 
 int main(int argc, char **argv)
 {
