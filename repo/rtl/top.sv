@@ -70,13 +70,12 @@ module top #(
     assign rs1 = instr[19:15];
     assign rd = instr[11:7];
 
-    regfile #(32, DATA_WIDTH) reg_instance (
+    reg_file #(32, DATA_WIDTH) reg_instance (
         .clk(clk),             // Connect clock signal
-        .rst(rst),             // Connect reset signal
-        .rs1(rs1),             // Source register 1 address
-        .rs2(rs2),             // Source register 2 address
-        .rd(rd),               // Destination register address
-        .regwrite(RegWrite),   // Register write enable
+        .ad1(ad1),             // Connect reset signal
+        .ad2(rs1),             // Source register 1 address
+        .as3(rs2),             // Source register 2 address
+        .RegWrite(RegWrite),   // Register write enable
         .ALUout(ALUout),       // Write data
         .rd1(ALUop1),          // Read data 1
         .rd2(regOp2)           // Read data 2

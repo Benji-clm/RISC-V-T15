@@ -14,7 +14,7 @@ protected:
         top->ad2 = 0;
         top->as3 = 0;
         top->RegWrite = 0;
-        top->WD = 0;
+        top->ALUout = 0;
     }
 
     void tick() {
@@ -31,7 +31,7 @@ protected:
 // Test: Write and read back from register
 TEST_F(RegFileTestbench, WriteAndRead) {
     top->as3 = 5;        // Write to register 5
-    top->WD = 0xDEADBEEF; // Write data
+    top->ALUout = 0xDEADBEEF; // Write data
     top->RegWrite = 1;   // Enable write
     tick();              // Perform write
 
@@ -39,19 +39,19 @@ TEST_F(RegFileTestbench, WriteAndRead) {
     top->ad1 = 5;        // Read from register 5
     tick();
 
-    EXPECT_EQ(top->RD1, 0xDEADBEEF); // Check the read value
+    EXPECT_EQ(top->rd1, 0xDEADBEEF); // Check the read value
 }
 
 // Test: Read from multiple registers
 TEST_F(RegFileTestbench, MultiRegisterRead) {
     // Write to two registers
     top->as3 = 5;
-    top->WD = 0x12345678;
+    top->ALUout = 0x12345678;
     top->RegWrite = 1;
     tick();
 
     top->as3 = 10;
-    top->WD = 0x87654321;
+    top->ALUout = 0x87654321;
     tick();
 
     // Disable write and read from both registers
@@ -60,14 +60,14 @@ TEST_F(RegFileTestbench, MultiRegisterRead) {
     top->ad2 = 10;
     tick();
 
-    EXPECT_EQ(top->RD1, 0x12345678); // Check first register
-    EXPECT_EQ(top->RD2, 0x87654321); // Check second register
+    EXPECT_EQ(top->rd1, 0x12345678); // Check first register
+    EXPECT_EQ(top->rd2, 0x87654321); // Check second register
 }
 
 // Test: Ensure register 0 always reads as 0
 TEST_F(RegFileTestbench, ZeroRegisterRead) {
     top->as3 = 0;
-    top->WD = 0xABCDEF01;
+    top->ALUout = 0xABCDEF01;
     top->RegWrite = 1;
     tick();
 
@@ -75,20 +75,20 @@ TEST_F(RegFileTestbench, ZeroRegisterRead) {
     top->ad1 = 0;
     tick();
 
-    EXPECT_EQ(top->RD1, 0x0); // Register 0 should always be 0
+    EXPECT_EQ(top->rd1, 0x0); // Register 0 should always be 0
 }
 
 // Test: Write to register with write disabled
 TEST_F(RegFileTestbench, WriteDisabled) {
     top->as3 = 5;
-    top->WD = 0xBADF00D;
+    top->ALUout = 0xBADF00D;
     top->RegWrite = 0; // Write disabled
     tick();
 
     top->ad1 = 5; // Read from the same register
     tick();
 
-    EXPECT_EQ(top->RD1, 0x0); // No value should have been written
+    EXPECT_EQ(top->rd1, 0x0); // No value should have been written
 }
 
 int main(int argc, char **argv) {
