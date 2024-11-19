@@ -1,103 +1,102 @@
 module top #(
-    parameter DATA_WIDTH = 32,
-    parameter ADDRESS_WIDTH = 16
+    DATA_WIDTH = 32,
+    ADDRESS_WIDTH = 16
 ) (
     input   logic clk,
     input   logic rst,
     output  logic [DATA_WIDTH-1:0] a0    
 );
+    assign a0 = 0;
 
-    assign a0 = 5;
+logic [ADDRESS_WIDTH-1:0]   pc;
+logic [ADDRESS_WIDTH-1:0]   ImmOp;
+logic                       PCsrc;
+logic [ADDRESS_WIDTH-1:0]   next_PC;
+logic [DATA_WIDTH-1:0]      instr;
+logic                       ResultSrc;
+logic                       MemWrite;
+logic [2:0]                 ALUControl;
+logic                       ALUSrc;
+logic [1:0]                 ImmSrc;
+logic                       RegWrite;
 
-    logic [ADDRESS_WIDTH-1:0]   pc, next_PC;
-    logic [DATA_WIDTH-1:0]      ImmOp, instr, ALUop1, regOp2, ALUop2, ALUout;
-    logic                       PCsrc, ResultSrc, MemWrite, ALUSrc, RegWrite, eq;
-    logic [2:0]                 ALUctrl;
-    logic [1:0]                 ImmSrc;
-    logic [4:0]                 rs1, rs2, rd;
+logic [4:0]                 rs1;
+logic [4:0]                 rs2;
+logic [4:0]                 rd;
 
-    always_comb begin
-        next_PC = pc + 16'h4; // Increment PC by 1
-    end
+logic [DATA_WIDTH-1:0]      ALUop1;
+logic [DATA_WIDTH-1:0]      regOp2;
+logic [DATA_WIDTH-1:0]      ALUop2;
 
+logic                       eq;
+logic [DATA_WIDTH-1:0]      ALUout;
 
-    always_ff @(posedge clk) begin
-        if (rst)
-            pc <= {ADDRESS_WIDTH{1'b0}};  // Reset pc to zero
-        else if (PCsrc)
-            pc <= pc + ImmOp[ADDRESS_WIDTH-1:0];             // Branch address computation directly
-        else
-            pc <= next_PC;                // Default behavior: Increment PC
-    end
+pc #(ADDRESS_WIDTH) pc_counter(
+    .clk(clk),
+    .rst(rst),
+    .branch_PC(pc + ImmOp),
+    .inc_pc(pc + 4),
+    .PCsrc(PCsrc),
+    .next_PC(next_PC)
+);
 
+assign pc = next_PC;
 
-    counter #(ADDRESS_WIDTH) pc_counter (
-        .clk(clk),              // Connect the clock signal
-        .rst(rst),              // Connect the reset signal
-        .next_PC(next_PC),      // Provide the next program counter value
-        .p_count(pc)            // Capture the output program counter value
-    );
-
-
-    i_mem #(DATA_WIDTH, ADDRESS_WIDTH) instr_mem(
-        .pc(pc),
-        .instr(instr)
-    );
-
-    // Control Unit
-    control_unit #(DATA_WIDTH) ctrl_unit(
-        .instr(instr),
-        .zero(eq),  
-        .PCSrc(PCsrc),
-        .ResultSrc(ResultSrc),
-        .MemWrite(MemWrite),
-        .ALUctrl(ALUctrl),
-        .ALUSrc(ALUSrc),
-        .ImmSrc(ImmSrc),
-        .RegWrite(RegWrite)
-    );
-
-    // Immediate Generator
-    SignExtend sign_extend (
-        .instr(instr),    // Connect the instruction signal
-        .ImmSrc(ImmSrc),  // Connect the immediate source signal
-        .ImmOp(ImmOp)     // Connect the immediate operand output
-    );
+i_mem #(DATA_WIDTH, ADDRESS_WIDTH) instr_mem(
+    .pc(pc),
+    .instr(instr)
+);
 
 
-    // Register File
-    assign rs2 = instr[24:20];
-    assign rs1 = instr[19:15];
-    assign rd = instr[11:7];
+control_unit #(DATA_WIDTH) ctrl_unit(
+    .instr(instr),
+    .zero(eq),  
+    .PCsrc(PCsrc),
+    .ResultSrc(ResultSrc),
+    .MemWrite(MemWrite),
+    .ALUControl(ALUControl),
+    .ALUSrc(ALUSrc),
+    .ImmSrc(ImmSrc),
+    .RegWrite(RegWrite)
+);
 
-    reg_file #(32, DATA_WIDTH) reg_instance (
-        .clk(clk),             // Connect clock signal
-        .ad1(ad1),             // Connect reset signal
-        .ad2(rs1),             // Source register 1 address
-        .as3(rs2),             // Source register 2 address
-        .RegWrite(RegWrite),   // Register write enable
-        .ALUout(ALUout),       // Write data
-        .rd1(ALUop1),          // Read data 1
-        .rd2(regOp2)           // Read data 2
-    );
+signextend #(DATA_WIDTH) signextend(
+    .instr(instr),
+    .ImmSrc(ImmSrc),
+    .ImmOp(ImmOp)
+);
 
+assign rs2 = instr[24:20];
+assign rs1 = instr[19:15];
+assign rd = instr[11:7];
 
-    // ALU Operand Selection
-    mux #(DATA_WIDTH) mux2(
-        .in0(regOp2),
-        .in1(ImmOp),
-        .sel(ALUSrc),
-        .out(ALUop2)
-    );
+regf #(DATA_WIDTH, ADDRESS_WIDTH) registers(
+    .clk(clk),
+    .a1(rs1),
+    .a2(rs2),
+    .a3(rd),
+    .we3(RegWrite),
+    .wd3(ALUout),
+    .rd1(ALUop1),
+    .rd2(regOp2),
+    .a0(a0)
+);
 
-    // ALU Logic
-    alu #(DATA_WIDTH) alu_ (
-        .in1(ALUop1),             // Operand 1
-        .in2(ALUop2),             // Operand 2
-        .ALUctrl(ALUctrl),        // ALU control signals
-        .ALUout(ALUout),          // ALU result
-        .eq(eq)                   // Equality output
-    );
+mux #(DATA_WIDTH) mux2(
+    .in0(regOp2),
+    .in1(ImmOp),
+    .sel(ALUSrc),
+    .out(ALUop2)
+);
+
+alu #(DATA_WIDTH) alu_(
+    .ALUop1(ALUop1),
+    .ALUop2(ALUop2),
+    .ALUctrl(ALUControl),
+    .ALUout(ALUout),
+    .eq(eq)
+);
+
 
 
 endmodule
