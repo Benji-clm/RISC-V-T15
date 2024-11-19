@@ -25,7 +25,6 @@ TEST_F(CpuTestbench, BaseProgramTest)
         runSimulation(1);
         if (top->a0 == 254)
         {
-            std::cout << top->a0 <<std::endl;
             SUCCEED();
             success = true;
             break;
@@ -33,7 +32,6 @@ TEST_F(CpuTestbench, BaseProgramTest)
     }
     if (!success)
     {
-        std::cout << top->a0 <<std::endl;
         FAIL() << "Counter did not reach 254";
     }
 }
