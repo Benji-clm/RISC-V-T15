@@ -42,6 +42,19 @@ always_comb begin
             ALUOp = 2'b00;
         end
 
+        // I-type
+        // For the moment we are assuming that the only I-type instruction is addi,
+        // however, later we will need to change the logic of the control unit as 
+        // determining the outputs of the main decoder will later require funct3
+        7'b0010011: begin
+            RegWrite = 1;
+            ImmSrc = 00;
+            ALUSrc = 1;
+            MemWrite = 0;
+            Branch = 0;
+            ALUOp = 2'b00;
+        end
+
         // R-type
         7'b0110011: begin
             RegWrite = 1;
@@ -53,7 +66,7 @@ always_comb begin
             ALUOp = 2'b10;
         end
 
-        // beq
+        // beq & bne
         7'b1100011: begin
             RegWrite = 0;
             ImmSrc = 2'b10;
@@ -62,9 +75,6 @@ always_comb begin
             ResultSrc = 0;
             Branch = 1;
             ALUOp = 2'b01;
-        end
-
-        default: begin
         end
 
     endcase
