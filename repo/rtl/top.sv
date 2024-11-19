@@ -60,7 +60,7 @@ control_unit #(DATA_WIDTH) ctrl_unit(
     .RegWrite(RegWrite)
 );
 
-signextend #(DATA_WIDTH) SignExtend(
+SignExtend SignExtend(
     .instr(instr),
     .ImmSrc(ImmSrc),
     .ImmOp(ImmOp)
