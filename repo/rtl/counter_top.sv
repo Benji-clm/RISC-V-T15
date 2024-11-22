@@ -1,4 +1,4 @@
-counter_top #(
+module counter_top #(
     parameter DATA_WIDTH = 16
 )(
     // Interface signals
@@ -12,7 +12,6 @@ counter_top #(
     // Internal signals
     logic [DATA_WIDTH-1:0] PCPlus4;         // PC + 4
     logic [DATA_WIDTH-1:0] PCTarget;        // PC + ImmExt
-    logic [DATA_WIDTH-1:0] PCnext;          // Output of MUX (next PC)
 
     counter_module Counter(
         .clk(clk),
@@ -28,3 +27,7 @@ counter_top #(
 
     // Calculate PCTarget
     assign PCTarget = PCounter + ImmExt; // Branch target address
+
+endmodule
+
+
