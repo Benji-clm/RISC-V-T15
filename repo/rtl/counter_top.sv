@@ -6,7 +6,7 @@ counter_top #(
     input logic rst,                        // Reset
     input logic PCSrc,                      // Select signal for MUX
     input logic [DATA_WIDTH-1:0] ImmExt,    // Immediate value for branching
-    output logic [DATA_WIDTH-1:0] PC       // Current Program Counter
+    output logic [DATA_WIDTH-1:0] PCounter     // Current Program Counter
 );
 
     // Internal signals
@@ -20,11 +20,11 @@ counter_top #(
         .PCSrc(PCSrc),
         .PCTarget(PCTarget),
         .PCPlus4(PCPlus4),
-        .PCounter(PC) // Output the current Program Counter
+        .PCounter(PCounter) // Output the current Program Counter
     );
 
     // Calculate PCPlus4
-    assign PCPlus4 = PC + {{DATA_WIDTH-3{1'b0}}, 3'b100}; // Increment PC by 4
+    assign PCPlus4 = PCounter + {{DATA_WIDTH-3{1'b0}}, 3'b100}; // Increment PC by 4
 
     // Calculate PCTarget
-    assign PCTarget = PC + ImmExt; // Branch target address
+    assign PCTarget = PCounter + ImmExt; // Branch target address
