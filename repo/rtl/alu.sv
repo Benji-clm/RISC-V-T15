@@ -1,8 +1,10 @@
+`include "definitions.sv"
+
 module alu #(
-    DATA_WIDTH = 32
+    parameter DATA_WIDTH = 32
 )(
     input  logic [DATA_WIDTH-1:0] ALUop1, ALUop2,
-    input  logic [2:0]            ALUctrl,
+    input  logic [3:0]            ALUctrl, // Updated to 4 bits to match `ALUop` definitions
     output logic [DATA_WIDTH-1:0] ALUout,
     output logic                  eq
 );
@@ -14,18 +16,27 @@ assign op1_signed = ALUop1;
 assign op2_signed = ALUop2;
 
 always_comb begin
+    // Default values for outputs
+    ALUout = 0;
+    eq = 0;
+
     case(ALUctrl)
-        3'b000: ALUout = ALUop1 + ALUop2; // addition
-        3'b001: ALUout = ALUop1 - ALUop2; // substraction
-        3'b010: ALUout = ALUop1 & ALUop2; // and
-        3'b011: ALUout = ALUop1 | ALUop2; // or
-        3'b101: ALUout = (op1_signed < op2_signed) ? 1 : 0; // set less than
+        `ALUop_ADD:  ALUout = ALUop1 + ALUop2;                             // Addition
+        `ALUop_SUB:  ALUout = ALUop1 - ALUop2;                             // Subtraction
+        `ALUop_AND:  ALUout = ALUop1 & ALUop2;                             // AND
+        `ALUop_OR:   ALUout = ALUop1 | ALUop2;                             // OR
+        `ALUop_XOR:  ALUout = ALUop1 ^ ALUop2;                             // XOR
+        `ALUop_LSL:  ALUout = ALUop1 << ALUop2[4:0];                       // Logical shift left
+        `ALUop_LSR:  ALUout = ALUop1 >> ALUop2[4:0];                       // Logical shift right
+        `ALUop_ASR:  ALUout = op1_signed >>> ALUop2[4:0];                  // Arithmetic shift right
+        `ALUop_SLT:  ALUout = (op1_signed < op2_signed) ? 1 : 0;           // Set less than (signed)
+        `ALUop_SLTU: ALUout = (ALUop1 < ALUop2) ? 1 : 0;                   // Set less than (unsigned)
+        `ALUop_B:    ALUout = ALUop1;                                      // Pass-through (branch computation)
+        default:     ALUout = 0;                                           // Default case
     endcase
 
-    // If we have a zero result, we set "zero" to 1 for the control unit, so that in the case of BEQ it knows
-    // that PCsrc should be equal to the branch (branch if equal). 
-    eq = (ALUout == 0'b0) ? 0 : 1;
-
+    // Zero flag for branch conditions
+    eq = (ALUout == 0) ? 1 : 0;
 end
 
 endmodule
