@@ -12,7 +12,7 @@ module DataMemory #(
 );
 
 reg [data_width-1:0] mem [0:memory_size-1];
-wire [31:0] addo0, add1, add2, add3;
+wire [31:0] add0, add1, add2, add3;
 
 initial 
 $readmemh("../rtl/program.hex", mem);
@@ -35,10 +35,10 @@ always_comb begin
 end
 
 always_ff@(negedge clk) begin
-    if (we[0]) m[add0] <= dwdata[7:0];
-    if (we[1]) m[add1] <= dwdata[15:8];
-    if (we[2]) m[add2] <= dwdata[23:16];
-    if (we[3]) m[add3] <= dwdata[31:24];
+    if (we[0]) mem[add0] <= wd_data[7:0];
+    if (we[1]) mem[add1] <= wd_data[15:8];
+    if (we[2]) mem[add2] <= wd_data[23:16];
+    if (we[3]) mem[add3] <= wd_data[31:24];
 end 
 
 endmodule
