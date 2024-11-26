@@ -6,8 +6,14 @@ module counter_top #(
     input logic rst,                        // Reset
     input logic PCSrc,                      // Select signal for MUX
     input logic stallF, 
+    input logic stallD, 
+    input logic flushD,
+    input logic [DATA_WIDTH-1:0]  instr,
     input logic [DATA_WIDTH-1:0] ImmExt,    // Immediate value for branching
-    output logic [DATA_WIDTH-1:0] PCounter     // Current Program Counter
+    output logic [DATA_WIDTH-1:0] PCounterF,     // Current Program Counter
+    output logic [DATA_WIDTH-1:0] InstrD,
+    output logic [DATA_WIDTH-1:0] PCounterD,   // after FF
+    output logic [DATA_WIDTH-1:0] PCPlus4D
 );
 
     // Internal signals
@@ -29,6 +35,18 @@ module counter_top #(
 
     // Calculate PCTarget
     assign PCTarget = PCounterF + ImmExt; // Branch target address
+
+
+    fetch_decode_pipe pipeline(
+        .stallD(stallD),
+        .flushD(flushD),
+        .PCounterF(PCounterF),
+        .instr(instr),
+        .PCPlus4F(PCPlus4F),
+        .InstrD(InstrD),
+        .PCounterD(PCounterD),
+        .PCPlus4D(PCPlus4D)
+    );
 
 endmodule
 
