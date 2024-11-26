@@ -2,20 +2,20 @@
 
 |              |                               | Selime | Alix | Ben | Augustin |
 | ------------ | ----------------------------- | ------------------ | ---------------- | ------------------------ | ---------------- |
-| Lab 4        | Program Counter               |                    |                  |                          |                  |
-|              | ALU                           |                    |                  |                          |                  |
-|              | Register File                 |                    |                  |                          |                  |
-|              | Instruction Memory            |                    |                  |                          |                  |
-|              | Control Unit                  |                    |                  |                          |                  |
-|              | Sign Extend                   |                    |                  |                          |                  |
-|              | Testbench                     |                    |                  |                          |                  |
-| Single Cycle | Data Memory                   |                    |                  |                          |                  |
-|              | Program Counter (refactor)    |                    |                  |                          |                  |
-|              | ALU (refactor)                |                    |                  |                          |                  |
-|              | Register File (refactor)      |                    |                  |                          |                  |
-|              | Instruction Memory (refactor) |                    |                  |                          |                  |
-|              | Control Unit (refactor)       |                    |                  |                          |                  |
-|              | Sign Extend (refactor)        |                    |                  |                          |                  |
+| Lab 4        | Program Counter               |            X       |                  |                          |                  |
+|              | ALU                           |                    |         X        |                          |                  |
+|              | Register File                 |            X       |         X        |                          |                  |
+|              | Instruction Memory            |                    |                  |                          |      X           |
+|              | Control Unit                  |                    |                  |            X             |      X           |
+|              | Sign Extend                   |                    |                  |                          |      X           |
+|              | Testbench                     |                    |                  |            X             |                  |
+| Single Cycle | Data Memory                   |                    |        X         |                          |                  |
+|              | Program Counter (refactor)    |            X       |                  |                          |                  |
+|              | ALU (refactor)                |                    |                  |                          |       X          |
+|              | Register File (refactor)      |            X       |        X         |                          |                  |
+|              | Instruction Memory (refactor) |            X       |                  |                          |                  |
+|              | Control Unit (refactor)       |                    |                  |            X             |                  |
+|              | Sign Extend (refactor)        |                    |                  |                          |       X          |
 | Pipeline     | Pipeline flip-flop stages     |                    |                  |                          |                  |
 |              | Hazard unit                   |                    |                  |                          |                  |
 | Cache        | Memory (refactor)             |                    |                  |                          |                  |
