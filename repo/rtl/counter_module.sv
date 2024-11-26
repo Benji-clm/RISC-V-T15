@@ -21,7 +21,7 @@ module counter_module #(
     always_ff @(posedge clk) begin
         if (rst)
             PCounterF <= {DATA_WIDTH{1'b0}}; // Reset PCounter to 0
-        else if (stallF) begin
+        else if (!stallF) begin
             PCounterF <= PCnext; // Update PCounter to the next value, if the clk is enabled            
         end
             
