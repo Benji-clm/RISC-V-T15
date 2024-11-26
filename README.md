@@ -6,7 +6,7 @@
 |              | ALU                           |                    |         X        |                          |                  |
 |              | Register File                 |            X       |         X        |                          |                  |
 |              | Instruction Memory            |                    |                  |                          |      X           |
-|              | Control Unit                  |                    |                  |            X             |                  |
+|              | Control Unit                  |                    |                  |            X             |      X           |
 |              | Sign Extend                   |                    |                  |                          |      X           |
 |              | Testbench                     |                    |                  |            X             |                  |
 | Single Cycle | Data Memory                   |                    |        X         |                          |                  |
