@@ -7,8 +7,16 @@ module decode_execute_pipe #(
     input logic [DATA_WIDTH-1:0]  rd2,
     input logic [DATA_WIDTH-1:0] PCounterD, 
     input logic [DATA_WIDTH-1:0] PCPlus4D,
-    input logic [31:0] ImmOp,   //Imm operand extended from SignExtend.sv
+    input logic [31:0] ImmOp,   //Imm operand extended from SignExtend.sv ImmExtD in scheme
+    
     //opcode etc how they will come as input
+    input logic [19:15] Rs1D,
+    input logic [24:20] Rs2D,
+    input logic [11:7] RdD,
+
+    output logic [19:15] Rs1E,
+    output logic [24:20] Rs2E,
+    output logic [11:7] RdE, 
 
     output logic [DATA_WIDTH-1:0]  rd1E,
     output logic [DATA_WIDTH-1:0]  rd2E,
@@ -34,9 +42,11 @@ module decode_execute_pipe #(
             rd2E <= rd2;
             PCounterE <= PCounterD;
             PCPlus4E <= PCPlus4;
-            ImmOp <= ImmOpE;        
+            ImmOpE <= ImmOp;
+            Rs1E <= Rs1D;
+            Rs2E <= Rs2D;
+            RdE <= RdD;
         end
-
 
     end
     
