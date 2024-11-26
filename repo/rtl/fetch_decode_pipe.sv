@@ -7,6 +7,7 @@ module fetch_decode_pipe #(
     input logic [DATA_WIDTH-1:0]  PCounterF,   // Before i_mem 
     input logic [DATA_WIDTH-1:0]  instr,       // output from i_mem
     input logic [DATA_WIDTH-1:0]  PCPlus4F,    // after +4
+    
     output logic [DATA_WIDTH-1:0] InstrD,      // after FF
     output logic [DATA_WIDTH-1:0] PCounterD,   // after FF
     output logic [DATA_WIDTH-1:0] PCPlus4D    //after FF 
