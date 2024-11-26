@@ -9,7 +9,7 @@ module fetch_decode_pipe #(
     input logic [DATA_WIDTH-1:0]  PCPlus4F,    // after +4
     output logic [DATA_WIDTH-1:0] InstrD,      // after FF
     output logic [DATA_WIDTH-1:0] PCounterD,   // after FF
-    output logic [DATA_WIDTH-1:0] PCPlus4D,    //after FF 
+    output logic [DATA_WIDTH-1:0] PCPlus4D    //after FF 
     // D -> after pipe, F -> before pipe 
 );
 
@@ -23,7 +23,7 @@ module fetch_decode_pipe #(
         end
 
         //Pass data through pipeline 
-        else if (stallD && FlushD != 1) begin
+        else if (!stallD) begin // stallD not shown in scheme
             InstrD <= instr;
             PCounterD <= PCounterF;
             PCPlus4D <= PCPlus4F;      
