@@ -9,7 +9,7 @@ module decode_execute_pipe #(
     input logic [DATA_WIDTH-1:0] PCPlus4D,
     input logic [31:0] ImmOp,   //Imm operand extended from SignExtend.sv ImmExtD in scheme
     
-    //opcode etc how they will come as input
+    //??
     input logic [19:15] Rs1D,
     input logic [24:20] Rs2D,
     input logic [11:7] RdD,
