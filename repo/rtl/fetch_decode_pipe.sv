@@ -7,7 +7,7 @@ module fetch_decode_pipe #(
     input logic [DATA_WIDTH-1:0]  PCounterF,   // Before i_mem 
     input logic [DATA_WIDTH-1:0]  instr,       // output from i_mem
     input logic [DATA_WIDTH-1:0]  PCPlus4F,    // after +4
-    
+
     output logic [DATA_WIDTH-1:0] InstrD,      // after FF
     output logic [DATA_WIDTH-1:0] PCounterD,   // after FF
     output logic [DATA_WIDTH-1:0] PCPlus4D    //after FF 
@@ -18,9 +18,9 @@ module fetch_decode_pipe #(
     always_ff @(posedge clk) begin
 
         if (FlushD) begin
-            InstrD <= 32'b0 ; // replacement to NOP
-            PCounterD <= 0;
-            PCPlus4D <= 0;
+            InstrD <= 32'b0 ;
+            PCounterD <= {DATA_WIDTH{1'b0}};
+            PCPlus4D  <= {DATA_WIDTH{1'b0}};
         end
 
         //Pass data through pipeline 
