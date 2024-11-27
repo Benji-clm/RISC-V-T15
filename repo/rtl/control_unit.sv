@@ -1,27 +1,23 @@
 `include "definitions.sv"
 
-module new_control_unit #(
+module control_unit #(
     parameter DATA_WIDTH = 32
 )(
-    input  logic [DATA_WIDTH-1:0] instr,
+    input  logic [6:0]            op,
+    input  logic                  stall,
+    input  logic [2:0]            funct3,
+    input  logic [6:0]            funct7,
     output logic [2:0]            PCsrc,
     output logic [1:0]            ResultSrc,
     output logic                  MemWrite,
-    output logic [2:0]            ALUControl,
+    output logic [3:0]            ALUControl,
     output logic                  ALUsrc,
-    output logic [1:0]            ImmSrc,
+    output logic [2:0]            ImmSrc,
     output logic                  RegWrite, 
-    output logic                  LS_mode                
+    output logic [2:0]            LS_mode                
 );
 
-    logic [6:0] op;
-    logic [2:0] funct3;
-    logic [6:0] funct7;
-    logic [1:0] ALUOp;
-    logic Branch;
-
-    assign op = instr[6:0];
-    assign funct3 = instr[14:12];
+    
 
 always_comb begin
 
@@ -41,8 +37,7 @@ always_comb begin
         7'b0110011: begin
             ALUsrc = 0;
             RegWrite = 1;
-            // funct7 is only used by R-type and I-type inst, we only compute it for these two
-            funct7 = instr[31:25];
+            
 
             case(funct3)
 
@@ -56,6 +51,8 @@ always_comb begin
                         7'h20: begin
                             ALUControl = `ALUop_SUB;
                         end
+
+                        default: $display("Warning: Undefined R-Type instruction");
                     endcase
                 end
 
@@ -84,6 +81,7 @@ always_comb begin
                         7'h20: begin
                             ALUControl = `ALUop_ASR;
                         end
+                        default: $display("Warning: Undefined R-Type right shift instruction");
                     endcase
                 end
 
@@ -102,6 +100,7 @@ always_comb begin
         // I-type inst
         7'b0010011: begin
             ImmSrc = `I_TYPE;
+            RegWrite = 1;
             ALUsrc = 1;
             case(funct3)
 
@@ -128,7 +127,6 @@ always_comb begin
 
                 3'b101: begin
                     ImmSrc = `NE_TYPE;
-                    funct7 = instr[31:25];
                     case(funct7)
                         7'h00: begin
                             ALUControl = `ALUop_LSR;
@@ -262,7 +260,7 @@ always_comb begin
         end
 
         // J-type
-        // uses ResultSrc = 2 as it stores PC + 4 into rd (doesn't use alu)
+        // uses ResultSrc = 2 as it stores PC + 4 into rd
         7'b1101111: begin 
             ImmSrc = `J_TYPE;
             PCsrc = `UC_JUMP;
@@ -298,23 +296,43 @@ always_comb begin
             ALUsrc = 1;
         end
 
-        // Environment
-        7'b1110011: begin 
+        // // Environment
+        // 7'b1110011: begin 
+        //     ImmSrc = `I_TYPE;
+
+        //     case(instr[7])
+
+        //         1'b0: begin 
+        //             // TODO
+        //         end
+
+        //         1'b1: begin 
+        //             // TODO
+        //         end
+        //     endcase
+        // end
+
+        // We can ignore Environment calls (for the moment...)
+
+
+        default: begin
+            // $display("Warning: Undefined instruction");
+            PCsrc = `NEXT_PC;
+            ResultSrc = 2'b00;
+            MemWrite = 0;
+            ALUControl = `ALUop_ADD;
+            ALUsrc = 0;
             ImmSrc = `I_TYPE;
-
-            case(instr[7])
-
-                1'b0: begin 
-                    // TODO
-                end
-
-                1'b1: begin 
-                    // TODO
-                end
-            endcase
+            RegWrite = 0;
+            LS_mode = `W_MODE;
         end
-
     endcase
+
+    if (stall) begin
+        MemWrite = 0;
+        RegWrite = 0;
+    end
+
 end
 
 endmodule
