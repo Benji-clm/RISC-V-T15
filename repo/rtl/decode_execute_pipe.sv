@@ -31,9 +31,7 @@ module decode_execute_pipe #(
         if(flushE) begin
             rd1E       <= {DATA_WIDTH{1'b0}};
             rd2E       <= {DATA_WIDTH{1'b0}};
-            PCounterE  <= {DATA_WIDTH{1'b0}};
-            PCPlus4E   <= {DATA_WIDTH{1'b0}};
-            ImmOpE     <= 32'b0; 
+            ImmOpE     <= 0; 
         end
 
     // Pass the data 
