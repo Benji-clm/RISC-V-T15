@@ -1,50 +1,75 @@
 module decode_execute_pipe #(
-    parameter DATA_WIDTH = 16
+    parameter DATA_WIDTH = 32
 ) (
-    input clk,
-    input flushE,
-    input logic [DATA_WIDTH-1:0]  rd1,
-    input logic [DATA_WIDTH-1:0]  rd2,
-    input logic [DATA_WIDTH-1:0] PCounterD, 
-    input logic [DATA_WIDTH-1:0] PCPlus4D,
-    input logic [31:0] ImmOp,   //Imm operand extended from SignExtend.sv ImmExtD in scheme
-    
-    //??
-    input logic [19:15] Rs1D,
-    input logic [24:20] Rs2D,
-    input logic [11:7] RdD,
+    // controls
+    input  logic                    clk,
+    input  logic                    FlushE,
 
-    output logic [19:15] Rs1E,
-    output logic [24:20] Rs2E,
-    output logic [11:7] RdE, 
+    // control unit inputs
+    input  logic                    RegWriteD,
+    input  logic [1:0]              ResultSrcD,
+    input  logic                    MemWriteD,
+    input  logic [2:0]              PCsrcD,
+    input  logic [3:0]              ALUControlD,
+    input  logic                    ALUsrcD,
 
-    output logic [DATA_WIDTH-1:0]  rd1E,
-    output logic [DATA_WIDTH-1:0]  rd2E,
-    output logic [DATA_WIDTH-1:0] PCPlus4E,
-    output logic [DATA_WIDTH-1:0] PCounterE,
-    output logic [31:0] ImmOpE
+    // regile, extend and PC inputs
+    input  logic [DATA_WIDTH-1:0]   rd1,
+    input  logic [DATA_WIDTH-1:0]   rd2,
+    input  logic [DATA_WIDTH-1:0]   pcD, 
+    input  logic [DATA_WIDTH-1:0]   PCPlus4D,
+    input  logic [31:0]             ImmExtD,   //Imm operand extended from SignExtend.sv ImmExtD in scheme
+    input  logic [19:15]            Rs1D,
+    input  logic [24:20]            Rs2D,
+    input  logic [11:7]             RdD,
+
+    // outputs
+    output logic                    RegWriteE,
+    output logic [1:0]              ResultSrcE,
+    output logic                    MemWriteE,
+    output logic [2:0]              PCsrcE,
+    output logic [3:0]              ALUControlE,
+    output logic                    ALUsrcE,
+
+    output logic [DATA_WIDTH-1:0]   rd1E,
+    output logic [DATA_WIDTH-1:0]   rd2E,
+    output logic [DATA_WIDTH-1:0]   pcE,
+    output logic [DATA_WIDTH-1:0]   PCPlus4E,
+    output logic [DATA_WIDTH-1:0]   ImmExtE,
+    output logic [19:15]            Rs1E,
+    output logic [24:20]            Rs2E,
+    output logic [11:7]             RdE, 
 );
 
     always_ff @(posedge clk) begin
 
-        //Flush
-        if(flushE) begin
-            rd1E       <= {DATA_WIDTH{1'b0}};
-            rd2E       <= {DATA_WIDTH{1'b0}};
-            ImmOpE     <= 0; 
+        // if no flush, pass contorl signals to E stage
+        if(!FlushE) begin
+            RegWriteE <= RegWriteD;
+            MemWriteE <= MemWriteD;
+            PCsrcE <= PCsrcD;
         end
 
-    // Pass the data 
-        else begin
+        else begin 
+            // if flush, reset control and data signals
+            RegWriteE <= '0;
+            MemWrite  <= '0;
+            PCsrcE    <= `NEXT_PC;
+        end
+
+            // Pass the data 
             rd1E <= rd1;
             rd2E <= rd2;
-            PCounterE <= PCounterD;
+            pcE <= pcD;
             PCPlus4E <= PCPlus4;
-            ImmOpE <= ImmOp;
+            ImmExtE <= ImmExtD;
             Rs1E <= Rs1D;
             Rs2E <= Rs2D;
             RdE <= RdD;
-        end
+
+            ResultSrcE  <= ResultSrcD;
+            ALUControlE <= ALUControlD;
+            ALUsrcE     <= ALUsrcD;
 
     end
     
