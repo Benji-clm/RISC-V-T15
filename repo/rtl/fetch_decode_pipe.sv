@@ -1,7 +1,6 @@
 module fetch_decode_pipe #(
     parameter DATA_WIDTH = 16
 ) (
-
     input logic stallD,   //From Hazard Unit  acts as eable to FF
     input logic flushD,   //From Hazard Unit  acts as rst to FF
     input logic [DATA_WIDTH-1:0]  PCounterF,   // Before i_mem 
@@ -14,23 +13,18 @@ module fetch_decode_pipe #(
     // D -> after pipe, F -> before pipe 
 );
 
-
     always_ff @(posedge clk) begin
 
-        if (FlushD) begin
-            InstrD <= 32'b0 ;
-            PCounterD <= {DATA_WIDTH{1'b0}};
-            PCPlus4D  <= {DATA_WIDTH{1'b0}};
-        end
-
+        if (FlushD)
+            InstrD <= 0 ;
+        
         //Pass data through pipeline 
-        else if (!stallD) begin // stallD not shown in scheme
+        else if (!stallD) begin
             InstrD <= instr;
             PCounterD <= PCounterF;
             PCPlus4D <= PCPlus4F;      
         end
 
     end
-
-    
+  
 endmodule
