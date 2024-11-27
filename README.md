@@ -9,6 +9,7 @@
 |              | Control Unit                  |                    |                  |            X             |      X           |
 |              | Sign Extend                   |                    |                  |                          |      X           |
 |              | Testbench                     |                    |                  |            X             |                  |
+|              | Topfile/implementation        |                    |                  |            X             |                  |
 | Single Cycle | Data Memory                   |                    |        X         |                          |                  |
 |              | Program Counter (refactor)    |            X       |                  |                          |                  |
 |              | ALU (refactor)                |                    |                  |                          |       X          |
@@ -16,8 +17,12 @@
 |              | Instruction Memory (refactor) |            X       |                  |                          |                  |
 |              | Control Unit (refactor)       |                    |                  |            X             |                  |
 |              | Sign Extend (refactor)        |                    |                  |                          |       X          |
-| Pipeline     | Pipeline flip-flop stages     |                    |                  |                          |                  |
-|              | Hazard unit                   |                    |                  |                          |                  |
+|              | Topfile/implementation        |                    |                  |            X             |                  |
+| Pipeline     | Fetch-Decode pipeline         |          X         |                  |                          |                  |
+|              | Decode-Execute pipeline       |         X          |                  |                          |                  |
+|              | Execture-Memory pipeline      |                    |         X        |                          |                  |
+|              | Memory-WriteBack pipeline     |                    |         X        |                          |                  |
+|              | Hazard unit                   |                    |                  |            X             |                  |
 | Cache        | Memory (refactor)             |                    |                  |                          |                  |
 |              | Direct mapped cache           |                    |                  |                          |                  |
 |              | Two-way set associative cache |                    |                  |                          |                  |
