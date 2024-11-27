@@ -1,6 +1,7 @@
 module fetch_decode_pipe #(
     parameter DATA_WIDTH = 16
 ) (
+    input clk,
     input logic stallD,   //From Hazard Unit  acts as eable to FF
     input logic flushD,   //From Hazard Unit  acts as rst to FF
     input logic [DATA_WIDTH-1:0]  PCounterF,   // Before i_mem 
