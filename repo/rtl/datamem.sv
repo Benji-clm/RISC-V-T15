@@ -12,7 +12,7 @@ module DataMemory #(
 );
 
 reg [data_width-1:0] mem [0:memory_size-1];
-logic [addr_width:0] add0, add1, add2, add3;
+logic [addr_width-1:0] add0, add1, add2, add3;
 
 initial 
 $readmemh("../rtl/program.hex", mem);
