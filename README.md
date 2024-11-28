@@ -23,6 +23,6 @@
 |              | Execture-Memory pipeline      |                    |         X        |                          |                  |
 |              | Memory-WriteBack pipeline     |                    |         X        |                          |                  |
 |              | Hazard unit                   |                    |                  |            X             |                  |
-| Cache        | Memory (refactor)             |                    |                  |                          |                  |
-|              | Direct mapped cache           |                    |                  |                          |                  |
-|              | Two-way set associative cache |                    |                  |                          |                  |
+| Cache        | Memory (refactor)             |                    |                  |                          |        X         |
+|              | Direct mapped cache           |                    |                  |                          |        X         |
+|              | Two-way set associative cache |                    |                  |                          |        X         |
