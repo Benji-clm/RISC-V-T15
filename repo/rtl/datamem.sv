@@ -4,7 +4,7 @@ module DataMemory #(
     parameter memory_size = 128
 )(
     input logic clk,
-    input logic [3:0]we, // write enable
+    input logic we, // write enable
     input logic [2:0] funct3,
     input logic [addr_width-1:0] daddr, // address
     input logic [data_width-1:0] wd_data // mem_write data
@@ -12,7 +12,7 @@ module DataMemory #(
 );
 
 reg [data_width-1:0] mem [0:memory_size-1];
-wire [31:0] add0, add1, add2, add3;
+logic [addr_width:0] add0, add1, add2, add3;
 
 initial 
 $readmemh("../rtl/program.hex", mem);
@@ -35,10 +35,12 @@ always_comb begin
 end
 
 always_ff@(negedge clk) begin
-    if (we[0]) mem[add0] <= wd_data[7:0];
-    if (we[1]) mem[add1] <= wd_data[15:8];
-    if (we[2]) mem[add2] <= wd_data[23:16];
-    if (we[3]) mem[add3] <= wd_data[31:24];
+    if (we) begin
+        mem[add0] <= wd_data[7:0];
+        mem[add1] <= wd_data[15:8];
+        mem[add2] <= wd_data[23:16];
+        mem[add3] <= wd_data[31:24];
+    end
 end 
 
 endmodule
