@@ -4,31 +4,17 @@ module counter_top #(
     // Interface signals
     input logic clk,                        // Clock
     input logic rst,                        // Reset
-    input logic PCSrc,                      // Select signal for MUX
-    input logic stallF, 
-    input logic stallD, 
-    input logic flushD,
+    input logic PCSrcE,                      // Select signal for MUX
+    input logic StallF,  
     input logic [DATA_WIDTH-1:0]  instr,
     input logic [DATA_WIDTH-1:0] ImmExt,    // Immediate value for branching
-    output logic [DATA_WIDTH-1:0] PCounterF,     // Current Program Counter
-    output logic [DATA_WIDTH-1:0] InstrD,
-    output logic [DATA_WIDTH-1:0] PCounterD,   // after FF
-    output logic [DATA_WIDTH-1:0] PCPlus4D
+    output logic [DATA_WIDTH-1:0] pcF,     // Current Program Counter
 );
 
     // Internal signals
     logic [DATA_WIDTH-1:0] PCPlus4F;         // PC + 4
     logic [DATA_WIDTH-1:0] PCTarget;        // PC + ImmExt
-
-    counter_module Counter(
-        .clk(clk),
-        .rst(rst),
-        .PCSrc(PCSrc),
-        .stallF(stallF),
-        .PCTarget(PCTarget),
-        .PCPlus4F(PCPlus4F),
-        .PCounterF(PCounterF) // Output the current Program Counter
-    );
+    logic [DATA_WIDTH-1:0] PCounterF;
 
     // Calculate PCPlus4
     assign PCPlus4F = PCounterF + {{DATA_WIDTH-3{1'b0}}, 3'b100}; // Increment PC by 4
@@ -36,17 +22,29 @@ module counter_top #(
     // Calculate PCTarget
     assign PCTarget = PCounterF + ImmExt; // Branch target address
 
-
-    fetch_decode_pipe pipeline(
-        .stallD(stallD),
-        .flushD(flushD),
-        .PCounterF(PCounterF),
-        .instr(instr),
+    counter_module Counter(
+        .PCSrcE(PCSrcE),
+        .PCTargetE(PCTargetE),
         .PCPlus4F(PCPlus4F),
-        .InstrD(InstrD),
-        .PCounterD(PCounterD),
-        .PCPlus4D(PCPlus4D)
+        .ALUResult(ALUResult),
+        .eq(eq),
+        .pc(PCounterF),
+        .Hazard_PCsrc(Hazard_PCsrc)
     );
+
+
+    always_ff @(posedge clk) begin
+        if (!StallF) begin 
+            pcF <=  rst ? '0 :PCounterF;       
+        end            
+    end
+
+
+    i_mem #(DATA_WIDTH, ADDRESS_WIDTH) instr_mem(
+    .pc(pc),
+    .instr(instr)   
+    );
+
 
 endmodule
 
