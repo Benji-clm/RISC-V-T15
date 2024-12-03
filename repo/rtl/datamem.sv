@@ -1,4 +1,4 @@
-module DataMemory #(
+module datamem #(
     parameter addr_width = 32,
     parameter data_width = 32,
     parameter memory_size = 128
@@ -7,7 +7,7 @@ module DataMemory #(
     input logic we, // write enable
     input logic [2:0] funct3,
     input logic [addr_width-1:0] daddr, // address
-    input logic [data_width-1:0] wd_data // mem_write data
+    input logic [data_width-1:0] wd_data, // mem_write data
     output logic [data_width-1:0] rd_data, // mem_read data
 );
 

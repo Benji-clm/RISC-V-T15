@@ -53,7 +53,7 @@ module decode_execute_pipe #(
         else begin 
             // if flush, reset control and data signals
             RegWriteE <= '0;
-            MemWrite  <= '0;
+            MemWriteE  <= '0;
             PCsrcE    <= `NEXT_PC;
         end
 
@@ -61,7 +61,7 @@ module decode_execute_pipe #(
             rd1E <= rd1;
             rd2E <= rd2;
             pcE <= pcD;
-            PCPlus4E <= PCPlus4;
+            PCPlus4E <= PCPlus4D;
             ImmExtE <= ImmExtD;
             Rs1E <= Rs1D;
             Rs2E <= Rs2D;

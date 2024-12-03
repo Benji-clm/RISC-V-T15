@@ -1,6 +1,6 @@
 `include "definitions.sv"
 
-module top_memory #(
+module top_mem #(
     parameter addr_width = 32,
               data_width = 32
 ) (
@@ -18,8 +18,8 @@ logic [data_width-1:0] ocache;
 logic [7:0] selected_byte;
 
 always_comb begin
-    case (addr[1:0])
-        2'b00: selected_byte = oache[7:0];
+    case (daddr[1:0])
+        2'b00: selected_byte = ocache[7:0];
         2'b01: selected_byte = ocache[15:8];
         2'b10: selected_byte = ocache[23:16];
         2'b11: selected_byte = ocache[31:24];
@@ -31,12 +31,12 @@ end
 always_comb begin
     case (funct3)
         `W_MODE: begin
-            out = out_cache;
+            out = ocache;
         end
         `B_MODE: begin
             out = {{24{selected_byte[7]}}, selected_byte};
         end
-        `BU_MODE: begin
+        `UB_MODE: begin
             out = {24'b0, selected_byte};
         end
         default: begin

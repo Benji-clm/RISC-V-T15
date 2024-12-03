@@ -244,56 +244,45 @@ alu #(DATA_WIDTH) alu_(
     .eq(eq)
 );
 
-execute_memory_pipe #(DATA_WIDTH) pipeline_EM(
-    .clk(clk),
+execute_mem_pipe #(DATA_WIDTH) pipeline_EM(
+    .clk(clk),                           // Clock signal
+    .flush(1'b0),                        // Assuming flush is not used in this context, set to 0 or connect appropriately
 
-    // inputs
-    .RegWriteE(RegWriteE),
-    .ResultSrcE(ResultSrcE),
-    .MemWriteE(MemWriteE),
-    .ALUResult(ALUResult),
-    .WriteDataE(WriteDataE),
-    .RdE(RdE),
-    .PCPlus4E(PCPlus4E),
+    // Inputs from EX stage
+    .alu_result(ALUResult),              // ALU result from EX stage
+    .write_data(WriteDataE),             // Write data (for store operations)
+    .daddr(PCPlus4E),                    // Data memory address (using PCPlus4E as a placeholder)
+    .mem_write(MemWriteE),               // Memory write enable signal
+    .mem_read(1'b0),                     // Assuming mem_read is not used; set appropriately if needed
+    .funct3(3'b000),                     // Assuming funct3 is not provided; set appropriately if needed
+    .reg_dest(RdE),                      // Register destination from EX stage
 
-    // outputs
-    .RegWriteM(RegWriteM),
-    .ResultSrcM(ResultSrcM),
-    .MemWriteM(MemWriteM),
-    .ALUResultM(ALUResultM),
-    .WriteDataM(WriteDataM),
-    .RdM(RdM),
-    .PCPlus4M(PCPlus4M)
+    // Outputs to MEM stage
+    .mem_alu_result(ALUResultM),         // ALU result to MEM stage
+    .mem_write_data(WriteDataM),         // Write data to MEM stage
+    .mem_daddr(PCPlus4M),                // Data memory address to MEM stage
+    .mem_mem_write(MemWriteM),           // Memory write enable to MEM stage
+    .mem_mem_read(ResultSrcM),           // Memory read enable to MEM stage (mapped from ResultSrcM)
+    .mem_funct3(3'b000),                 // Function control (if used, map appropriately)
+    .mem_reg_dest(RdM)                   // Register destination to MEM stage
 );
 
-datamem #(DATA_WIDTH, MEMORY_WIDTH) data_memory(
-    .clk(clk),
-    .we(MemWriteM),
-    .a(ALUResultM),
-    .wd(WriteDataM),
-    .rd(rd)
+
+mem_writeback_pipe #(DATA_WIDTH) pipeline_MW_inst(
+    .clk(clk),                          // Clock signal
+    .flush(1'b0),                       // Assuming flush is not being used in this context, set to 0 or connect appropriately
+
+    // Inputs from MEM stage
+    .mem_alu_result(ALUResultM),        // ALU result from MEM stage
+    .mem_mem_data(PCPlus4M),            // Memory data or equivalent, assuming PCPlus4M is used here as memory data
+    .mem_reg_dest(RdM),                 // Register destination from MEM stage
+    .mem_reg_write(RegWriteM),          // Register write enable from MEM stage
+
+    // Outputs to WB stage
+    .wb_data(ALUResultW),               // Data to write back to the register file
+    .wb_reg_dest(RdW),                  // Register destination to WB stage
+    .wb_reg_write(RegWriteW)            // Register write enable to WB stage
 );
-
-memory_write_pipe #(DATA_WIDTH) pipeline_MW_inst(
-    .clk(clk),
-
-    // inputs
-    .RegWriteM(RegWriteM),
-    .ResultSrcM(ResultSrcM),
-    .ALUResultM(ALUResultM),
-    .rd(rd),
-    .RdM(RdM),
-    .PCPlus4M(PCPlus4M),
-
-    // output
-    .RegWriteW(RegWriteW),
-    .ResultSrcW(ResultSrcW),
-    .ALUResultW(ALUResultW),
-    .ReadDataW(ReadDataW),
-    .RdW(RdW),
-    .PCPlus4W(PCPlus4W)
-);
-
 
 mux3 #(DATA_WIDTH) mux3_(
     .in0(ALUResultW),

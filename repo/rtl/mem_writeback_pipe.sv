@@ -1,4 +1,4 @@
-module mem_writeback_pipeline #(
+module mem_writeback_pipe #(
     parameter DATA_WIDTH = 32
 )(
     input logic clk,                  

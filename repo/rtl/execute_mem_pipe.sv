@@ -1,5 +1,5 @@
 // EX/MEM Pipeline Module
-module ex_mem_pipeline #(
+module execute_mem_pipe #(
     parameter DATA_WIDTH = 32,
     parameter ADDR_WIDTH = 32
 )(

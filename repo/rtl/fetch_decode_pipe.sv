@@ -16,7 +16,7 @@ module fetch_decode_pipe #(
 
     always_ff @(posedge clk) begin
 
-        if (FlushD)
+        if (flushD)
             InstrD <= 0 ;
         
         //Pass data through pipeline 

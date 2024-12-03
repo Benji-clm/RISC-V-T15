@@ -86,7 +86,7 @@ always_ff @(posedge clk) begin
 end
 
 // External memory module instantiation
-DataMemory #(
+datamem #(
     .addr_width(addr_width),
     .data_width(data_width)
 ) memory_instance (
