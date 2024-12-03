@@ -173,7 +173,7 @@ regf #(DATA_WIDTH, ADDRESS_WIDTH) registers(
     .a0(a0)
 );
 
-pipeline_DE #(DATA_WIDTH) pipeline_DE_inst (
+decode_execute_pipe #(DATA_WIDTH) pipeline_DE_inst (
     // Pipeline control inputs
     .clk(clk),
     .FlushE(FlushE),
@@ -328,11 +328,11 @@ hazard_unit hazard_unit_(
 
 top_mem top_memory_inst (
         .clk(clk),                      
-        .write_en(write_en),            
+        .we(we),            
         .funct3(funct3),                
-        .addr(ALUResultM),              
-        .write_data(WriteDataM),       
-        .hit(hit),                      
+        .daddr(ALUResultM),              
+        .wd_data(WriteDataM),       
+        .cache_hit(cache_hit),                      
         .out(ReadDataW)               
     );
 
