@@ -326,6 +326,16 @@ hazard_unit hazard_unit_(
     .ForwardBE(ForwardBE)
 );
 
+top_mem top_memory_inst (
+        .clk(clk),                      
+        .write_en(write_en),            
+        .funct3(funct3),                
+        .addr(ALUResultM),              
+        .write_data(WriteDataM),       
+        .hit(hit),                      
+        .out(ReadDataW)               
+    );
+
 
 
 endmodule
