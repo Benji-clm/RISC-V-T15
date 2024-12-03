@@ -60,6 +60,4 @@ module counter_module #(
 end
 
 
-
-
 endmodule
