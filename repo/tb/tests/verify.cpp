@@ -32,18 +32,18 @@ TEST_F(CpuTestbench, BaseProgramTest)
     }
     if (!success)
     {
+        std::cout << top->a0 << std::endl;
         FAIL() << "Counter did not reach 254";
     }
 }
 
-// Note this is how we are going to test your CPU. Do not worry about this for
-// now, as it requires a lot more instructions to function
-// TEST_F(CpuTestbench, Return5Test)
-// {
-//     system("./compile.sh c/return_5.c");
-//     runSimulation(100);
-//     EXPECT_EQ(top->a0, 5);
-// }
+
+TEST_F(CpuTestbench, Return5Test)
+{
+    system("./compile.sh c/return_5.c");
+    runSimulation(100);
+    EXPECT_EQ(top->a0, 5);
+}
 
 int main(int argc, char **argv)
 {

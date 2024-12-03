@@ -135,8 +135,9 @@ assign op = instrD[6:0];
 assign funct3 = instrD[14:12];
 assign funct7 = instrD[31:25];
 
-control_unit #(DATA_WIDTH) ctrl_unit(
+control_unit ctrl_unit(
     .op(op),
+    .stall(stall),
     .funct3(funct3),
     .funct7(funct7),
     .PCsrc(PCsrcD),
@@ -146,7 +147,8 @@ control_unit #(DATA_WIDTH) ctrl_unit(
     .ALUsrc(ALUsrcD),
     .ImmSrc(ImmSrcD),
     .RegWrite(RegWriteD),
-    .LS_mode(LS_mode)
+    .LS_mode(LS_mode),
+    .MemRead(ResultSrcM)
 );
 
 assign instr_ext = instrD[31:7];
@@ -245,17 +247,17 @@ alu #(DATA_WIDTH) alu_(
 );
 
 execute_mem_pipe #(DATA_WIDTH) pipeline_EM(
-    .clk(clk),                           // Clock signal
-    .flush(1'b0),                        // Assuming flush is not used in this context, set to 0 or connect appropriately
+    .clk(clk),                           
+    .flush(1'b0),                        
 
     // Inputs from EX stage
-    .alu_result(ALUResult),              // ALU result from EX stage
-    .write_data(WriteDataE),             // Write data (for store operations)
-    .daddr(PCPlus4E),                    // Data memory address (using PCPlus4E as a placeholder)
-    .mem_write(MemWriteE),               // Memory write enable signal
-    .mem_read(1'b0),                     // Assuming mem_read is not used; set appropriately if needed
-    .funct3(3'b000),                     // Assuming funct3 is not provided; set appropriately if needed
-    .reg_dest(RdE),                      // Register destination from EX stage
+    .alu_result(ALUResult),              
+    .write_data(WriteDataE),             
+    .daddr(PCPlus4E),                    
+    .mem_write(MemWriteE),               
+    .mem_read(1'b0),                     
+    .funct3(funct3),                     
+    .reg_dest(RdE),                      
 
     // Outputs to MEM stage
     .mem_alu_result(ALUResultM),         // ALU result to MEM stage
@@ -263,7 +265,7 @@ execute_mem_pipe #(DATA_WIDTH) pipeline_EM(
     .mem_daddr(PCPlus4M),                // Data memory address to MEM stage
     .mem_mem_write(MemWriteM),           // Memory write enable to MEM stage
     .mem_mem_read(ResultSrcM),           // Memory read enable to MEM stage (mapped from ResultSrcM)
-    .mem_funct3(3'b000),                 // Function control (if used, map appropriately)
+    .mem_funct3(mem_funct3),                 // Function control (if used, map appropriately)
     .mem_reg_dest(RdM)                   // Register destination to MEM stage
 );
 
@@ -318,7 +320,7 @@ hazard_unit hazard_unit_(
 top_mem top_memory_inst (
         .clk(clk),                      
         .we(we),            
-        .funct3(funct3),                
+        .funct3(mem_funct3),                
         .daddr(ALUResultM),              
         .wd_data(WriteDataM),       
         .cache_hit(cache_hit),                      

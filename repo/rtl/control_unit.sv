@@ -1,12 +1,12 @@
 `include "definitions.sv"
 
-module control_unit #(
-    parameter DATA_WIDTH = 32
-)(
+module control_unit (
+    // inputs
     input  logic [6:0]            op,
     input  logic                  stall,
     input  logic [2:0]            funct3,
     input  logic [6:0]            funct7,
+
     output logic [2:0]            PCsrc,
     output logic [1:0]            ResultSrc,
     output logic                  MemWrite,
@@ -14,7 +14,8 @@ module control_unit #(
     output logic                  ALUsrc,
     output logic [2:0]            ImmSrc,
     output logic                  RegWrite, 
-    output logic [2:0]            LS_mode                
+    output logic [2:0]            LS_mode,
+    output logic                  MemRead              
 );
 
     
@@ -26,10 +27,11 @@ always_comb begin
     ResultSrc = 2'b00;
     MemWrite = 0;
     ALUControl = `ALUop_ADD;
-    ALUsrc = 0;
+    ALUsrc = 1'b0;
     ImmSrc = `I_TYPE; // (3'b000)
     RegWrite = 0;
-    LS_mode = `W_MODE;
+    LS_mode = 3'b000;
+    MemRead  = 0;
 
     case(op)
 
@@ -162,6 +164,7 @@ always_comb begin
             ResultSrc = 1;
             RegWrite = 1;
             MemWrite = 0;
+            MemRead  = 1;
             case(funct3)
                 3'b000: begin 
                     LS_mode = `B_MODE;
@@ -194,6 +197,7 @@ always_comb begin
             ALUsrc = 1;
             RegWrite = 0;
             MemWrite = 1;
+            MemRead  = 0;
 
             case(funct3) 
                 3'b000: begin 
@@ -324,7 +328,7 @@ always_comb begin
             ALUsrc = 0;
             ImmSrc = `I_TYPE;
             RegWrite = 0;
-            LS_mode = `W_MODE;
+            LS_mode = 3'b000;
         end
     endcase
 
@@ -336,3 +340,4 @@ always_comb begin
 end
 
 endmodule
+
