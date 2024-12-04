@@ -1,59 +1,108 @@
-`include "definitions.sv"
-
 module top_mem #(
-    parameter addr_width = 32,
-              data_width = 32
+    parameter ADDR_WIDTH = 32,
+              DATA_WIDTH = 32
 ) (
     input logic clk,
-    input logic [3:0] we,            
-    input logic [2:0] funct3,              
-    input logic [addr_width-1:0] daddr,    
-    input logic [data_width-1:0] wd_data, 
-
-    output logic cache_hit,                    
-    output logic [data_width-1:0] out   
+    input logic we,
+    input logic MemRead,            
+    input logic [2:0] LS_mode,              
+    input logic [ADDR_WIDTH-1:0] a,    
+    input logic [DATA_WIDTH-1:0] wd, 
+                    
+    output logic [DATA_WIDTH-1:0] rd   
 );
 
-logic [data_width-1:0] ocache;
-logic [7:0] selected_byte;
+logic   [DATA_WIDTH-1:0] rd_cache;
+logic [7:0] byte3, byte2, byte1, byte0;
 
 always_comb begin
-    case (daddr[1:0])
-        2'b00: selected_byte = ocache[7:0];
-        2'b01: selected_byte = ocache[15:8];
-        2'b10: selected_byte = ocache[23:16];
-        2'b11: selected_byte = ocache[31:24];
-        default: selected_byte = 8'b0;
-    endcase
-end
+    byte3 = rd_cache[31:24];
+    byte2 = rd_cache[23:16];
+    byte1 = rd_cache[15:8];
+    byte0 = rd_cache[7:0];
 
-// Output generation logic based on funct3
-always_comb begin
-    case (funct3)
+    // Read logic
+    case (LS_mode)
         `W_MODE: begin
-            out = ocache;
+            rd = rd_cache; 
         end
         `B_MODE: begin
-            out = {{24{selected_byte[7]}}, selected_byte};
+            case (a[1:0])
+                2'b00: begin
+                    rd = {{24{byte0[7]}}, byte0};
+                end
+                2'b01: begin
+                    rd = {{24{byte1[7]}}, byte1};
+                end
+                2'b10: begin
+                    rd = {{24{byte2[7]}}, byte2};
+                end
+                2'b11: begin
+                    rd = {{24{byte3[7]}}, byte3};
+                end
+            endcase
         end
+
+        `H_MODE: begin
+            case (a[1:0])
+                2'b00: begin
+                    rd = {{16{byte1[7]}}, byte1, byte0};
+                end
+
+                2'b10: begin
+                    rd = {{16{byte3[7]}}, byte3, byte2};
+                end
+                default: begin // not aligned
+                    $error("Misaligned halfword write detected!");
+                end
+            endcase
+        end
+
         `UB_MODE: begin
-            out = {24'b0, selected_byte};
+            case (a[1:0])
+                2'b00: begin
+                    rd = {24'b0, byte0};
+                end
+                2'b01: begin
+                    rd = {24'b0, byte1};
+                end
+                2'b10: begin
+                    rd = {24'b0, byte2};
+                end
+                2'b11: begin
+                    rd = {24'b0, byte3};
+                end
+            endcase
         end
-        default: begin
-            out = 32'b0; 
-            $display("WARNING");
+
+        `UH_MODE: begin
+            case (a[1:0])
+                2'b00: begin
+                    rd = {{16{byte1[0]}}, byte1, byte0};
+                end
+                2'b10: begin
+                    rd = {16'b0, byte3, byte2};
+                end
+                default: begin
+                    $error("WARNING: Misaligned halfword write detected");
+                end
+            endcase
         end
+
+        default: $display("WARNING: unrecognised LS_mode in cached_memory");
     endcase
 end
 
-DataCache #(addr_width, data_width) data_cache_inst (
+
+DataCache data_cache_inst (
     .clk(clk),
     .we(we),                 
-    .funct3(funct3),               
-    .daddr(daddr),                  
-    .wd_data(wd_data),          
-    .cache_hit(cache_hit),               
-    .rd_data(rd_data)            
+    .LS_mode(LS_mode), 
+    .MemRead(MemRead),              
+    .a(a),                  
+    .wd(wd), 
+                            
+    .rd(rd_cache)            
 );
 
 endmodule
