@@ -15,4 +15,3 @@ end
 assign instr = {array[pc+3], array[pc+2], array[pc+1], array[pc]};
  
 endmodule
-
