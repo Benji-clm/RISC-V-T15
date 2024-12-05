@@ -6,7 +6,7 @@ module hazard_unit(
     input  logic [4:0]      Rs2E,
     input  logic [4:0]      RdE,
     input  logic            Hazard_PCsrc,
-    input  logic [1:0]      ResultSrcE,
+    input  logic            ResultSrcE,
     input  logic [4:0]      RdM,
     input  logic [4:0]      RdW,
     input  logic            RegWriteM,
@@ -55,13 +55,20 @@ always_comb begin
 
     
     // Sll when a load hazard occurs:
-    lwStall = ResultSrcE[0] && ((Rs1D == RdE) | (Rs2D == RdE));
+    if (ResultSrcE && ((Rs1D == RdE) || (Rs2D == RdE))) begin
+        lwStall = 1'b1;
+    end        
+    else begin
+        lwStall = 1'b0;
+    end
 
     StallF = lwStall;
     StallD = lwStall;
 
     FlushD = Hazard_PCsrc;
-    FlushE = (Hazard_PCsrc | lwStall);
+    FlushE = Hazard_PCsrc;
 end
+
+
 
 endmodule
