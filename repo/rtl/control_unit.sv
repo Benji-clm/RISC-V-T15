@@ -20,6 +20,7 @@ module control_unit (
 
     
 
+
 always_comb begin
 
     // start with the default values
@@ -166,22 +167,25 @@ always_comb begin
             MemWrite = 0;
             MemRead  = 1;
             case(funct3)
+                //lb
                 3'b000: begin 
                     LS_mode = `B_MODE;
                 end
-
+                //lh
                 3'b001: begin 
                     LS_mode = `H_MODE;
                 end
-
+                //lw
                 3'b010: begin 
                     LS_mode = `W_MODE;
                 end
 
+                //ub
                 3'b100: begin 
                     LS_mode = `UB_MODE;
                 end
 
+                //luh
                 3'b101: begin 
                     LS_mode = `UH_MODE;
                 end
@@ -340,4 +344,3 @@ always_comb begin
 end
 
 endmodule
-
