@@ -33,10 +33,10 @@
 
 
 // Defining load/store types
-`define B_MODE          3'b000
-`define H_MODE          3'b001
-`define W_MODE          3'b010
+`define W_MODE          3'b000
+`define B_MODE          3'b010
 `define UB_MODE         3'b011
-`define UH_MODE         3'b100
+`define H_MODE          3'b100
+`define UH_MODE         3'b101
 
 `endif
