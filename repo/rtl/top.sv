@@ -1,7 +1,6 @@
 module top #(
     DATA_WIDTH = 32,
-    ADDRESS_WIDTH = 32,
-    MEMORY_WIDTH = 8
+    ADDRESS_WIDTH = 32
 ) (
     input   logic clk,
     input   logic rst,
