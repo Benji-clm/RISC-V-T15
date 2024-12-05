@@ -18,7 +18,7 @@ initial
 $readmemh("../rtl/program.hex", mem);
 
 assign add0 = (daddr & 32'hfffffffc)+ 32'h00000000;
-assign add1 = (daddr & 32'hfffffffc)+ 32'h00000001;
+assign add1 = (daddr & 32'hfffffffc)+ 32'h00000001;s
 assign add2 = (daddr & 32'hfffffffc)+ 32'h00000002;
 assign add3 = (daddr & 32'hfffffffc)+ 32'h00000003;
 
