@@ -1,120 +1,118 @@
 module i_cache #(
     parameter DATA_WIDTH = 32,
-    parameter NUM_BLOCKS = 64 // Number of cache lines
-)(
-    input logic clk,
-    input logic rst,
-
-    // CPU Interface
-    input logic [DATA_WIDTH-1:0] pc,         // PC from fetch stage
-    input logic fetch_req,                  // Fetch request signal
-    output logic [DATA_WIDTH-1:0] instr,    // Fetched instruction
-    output logic hit,                       // Cache hit
-    output logic miss,                      // Cache miss
-
-    // i_mem Interface
-    output logic mem_req,                   // Memory request signal
-    output logic [DATA_WIDTH-1:0] mem_pc,   // Address to i_mem
-    input logic [DATA_WIDTH-1:0] mem_instr, // Instruction fetched from i_mem
-    input logic mem_valid                   // i_mem data valid signal
+    parameter CACHE_SIZE = 256, // Number of cache sets
+    parameter LINE_SIZE = 4,    // Number of instructions per cache line
+    parameter ASSOC = 2,        // Associativity (number of ways)
+    parameter ADDR_WIDTH = 32
+) (
+    input  logic                     clk,
+    input  logic                     reset,
+    input  logic [ADDR_WIDTH-1:0]    pc,
+    output logic [DATA_WIDTH-1:0]    instr
 );
 
-    // Cache structures
+    // Cache line structure
     typedef struct packed {
-        logic valid;                        // Valid bit
-        logic [DATA_WIDTH-3:0] tag;         // Tag (address minus offset bits)
-        logic [DATA_WIDTH-1:0] data;        // Cached instruction
-        logic [5:0] lru_counter;            // LRU counter for eviction
+        logic                        valid;  // Valid bit
+        logic [ADDR_WIDTH-$clog2(CACHE_SIZE*LINE_SIZE)-1:0] tag; // Tag
+        logic [DATA_WIDTH*LINE_SIZE-1:0] data; // Cache line data
     } cache_line_t;
 
-    cache_line_t cache_lines [NUM_BLOCKS-1:0];
+    // Cache set structure
+    typedef struct packed {
+        cache_line_t [ASSOC-1:0] ways; // Associative ways
+        logic [ASSOC-1:0] lru;         // LRU bits
+    } cache_set_t;
 
-    // Signals
-    logic [DATA_WIDTH-3:0] tag = pc[DATA_WIDTH-1:2]; // Extract tag from PC
-    logic [5:0] selected_index;                      // Index of block to evict
-    logic [DATA_WIDTH-1:0] instr_comb;               // Intermediate combinational signal for instruction
+    // Cache memory
+    cache_set_t cache_mem [CACHE_SIZE];
 
-    // State machine for cache
-    typedef enum logic [1:0] {IDLE, FETCH_MEM, UPDATE_CACHE} state_t;
-    state_t state;
+    // Signals for i_mem
+    logic [DATA_WIDTH-1:0] mem_instr;
+    logic [DATA_WIDTH*LINE_SIZE-1:0] mem_data;
+    logic [ADDR_WIDTH-1:0] aligned_pc;
 
-    // Reset logic and state machine
-    always_ff @(posedge clk or posedge rst) begin
-        if (rst) begin
-            // Reset all cache lines
-            for (logic [5:0] i = 0; i < NUM_BLOCKS; i++) begin
-                cache_lines[i].valid <= 0;
-                cache_lines[i].lru_counter <= 0;
-            end
-            state <= IDLE;
-            mem_req <= 0;
-            instr <= 32'b0;
-        end else begin
-            case (state)
-                IDLE: begin
-                    if (fetch_req) begin
-                        if (hit) begin
-                            instr <= instr_comb; // Forward the fetched instruction
-                            state <= IDLE;
-                        end else begin
-                            state <= FETCH_MEM;  // Fetch from memory
-                            mem_req <= 1;
-                            mem_pc <= pc;
-                        end
-                    end
-                end
-                FETCH_MEM: begin
-                    if (mem_valid) begin
-                        // Data fetched, proceed to cache update
-                        state <= UPDATE_CACHE;
-                        mem_req <= 0;
-                    end
-                end
-                UPDATE_CACHE: begin
-                    // Update cache and go back to IDLE
-                    cache_lines[selected_index].valid <= 1;
-                    cache_lines[selected_index].tag <= tag;
-                    cache_lines[selected_index].data <= mem_instr;
-                    cache_lines[selected_index].lru_counter <= 0;
+    // Decode PC into index, tag, and block offset
+    logic [$clog2(CACHE_SIZE)-1:0]  index;
+    logic [ADDR_WIDTH-$clog2(CACHE_SIZE*LINE_SIZE)-1:0] tag;
+    logic [$clog2(LINE_SIZE)-1:0]  block_offset;
 
-                    // Increment LRU counters for other lines
-                    for (logic [5:0] j = 0; j < NUM_BLOCKS; j++) begin
-                        if (cache_lines[j].valid && j != selected_index) begin
-                            cache_lines[j].lru_counter <= cache_lines[j].lru_counter + 1;
-                        end
-                    end
+    assign index = pc[$clog2(CACHE_SIZE)-1:0];
+    assign tag = pc[ADDR_WIDTH-1:$clog2(CACHE_SIZE*LINE_SIZE)];
+    assign block_offset = pc[$clog2(LINE_SIZE)-1:0];
+    assign aligned_pc = pc & ~($clog2(LINE_SIZE)-1); // Align PC to cache line boundary
 
-                    instr <= mem_instr; // Provide the fetched instruction
-                    state <= IDLE;
-                end
-            endcase
+    // i_mem instance
+    i_mem #(DATA_WIDTH) mem_inst (
+        .pc(aligned_pc),
+        .instr(mem_instr)
+    );
+
+    // Drive mem_data (fetch multiple instructions for a cache line)
+    always_comb begin
+        for (int i = 0; i < LINE_SIZE; i++) begin
+            mem_data[(i*DATA_WIDTH) +: DATA_WIDTH] = mem_instr; // Simplified for single-instruction i_mem
         end
     end
 
-    logic [5:0] i; // Declare loop variable outside
+    // Cache hit/miss detection
+    logic hit;
+    logic [ASSOC-1:0] hit_way;
+
     always_comb begin
         hit = 0;
-        miss = 1;
-        instr_comb = 32'b0;
-        for (i = 0; i < NUM_BLOCKS; i++) begin
-            if (cache_lines[i].valid && cache_lines[i].tag == tag) begin
+        hit_way = 0;
+        for (int i = 0; i < ASSOC; i++) begin
+            if (cache_mem[index].ways[i].valid && cache_mem[index].ways[i].tag == tag) begin
                 hit = 1;
-                miss = 0;
-                instr_comb = cache_lines[i].data;
-                break;
+                hit_way[i] = 1;
             end
         end
     end
 
-    // LRU replacement logic
-    logic [5:0] j; // Declare loop variable outside
+    // Data output logic
     always_comb begin
-        for (j = 0; j < NUM_BLOCKS; j++) begin
-            if (cache_lines[j].valid && j != selected_index) begin
-                cache_lines[j].lru_counter = cache_lines[j].lru_counter + 1;
+        instr = mem_instr; // Default value for instr
+        if (hit) begin
+            for (int i = 0; i < ASSOC; i++) begin
+                if (hit_way[i]) begin
+                    instr = cache_mem[index].ways[i].data[(block_offset*DATA_WIDTH) +: DATA_WIDTH];
+                end
             end
         end
     end
 
+    // Cache refill and replacement logic
+    always_ff @(posedge clk) begin
+        if (reset) begin
+            // Invalidate all cache lines
+            for (int i = 0; i < CACHE_SIZE; i++) begin
+                for (int j = 0; j < ASSOC; j++) begin
+                    cache_mem[i].ways[j].valid <= 0;
+                    cache_mem[i].ways[j].tag <= 0;
+                    cache_mem[i].ways[j].data <= 0;
+                end
+            end
+        end else if (!hit) begin
+            // On a miss, load a new cache line from memory
+            logic [$clog2(ASSOC)-1:0] lru_way;
+            lru_way = 0;
+            for (int i = 1; i < ASSOC; i++) begin
+                if (cache_mem[index].lru[i] > cache_mem[index].lru[lru_way]) begin
+                    lru_way = i[$clog2(ASSOC)-1:0];
+                end
+            end
+
+            // Replace the LRU way
+            cache_mem[index].ways[lru_way].data <= mem_data;
+            cache_mem[index].ways[lru_way].tag <= tag;
+            cache_mem[index].ways[lru_way].valid <= 1;
+
+            // Update LRU
+            for (int i = 0; i < ASSOC; i++) begin
+                cache_mem[index].lru[i] <= (i[$clog2(ASSOC)-1:0] == lru_way) ? 0 : cache_mem[index].lru[i] + 1;
+            end
+        end
+    end
 
 endmodule

@@ -123,11 +123,13 @@ always_ff @(posedge clk) begin
     end
 end
 
-
-i_mem #(DATA_WIDTH) instr_mem(
+i_cache cache (
+    .clk(clk),
+    .reset(rst),
     .pc(pcF),
     .instr(instr)
 );
+
 
 fetch_decode_pipe #(DATA_WIDTH) pipeline_FD(
     .clk(clk),
