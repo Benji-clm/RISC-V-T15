@@ -26,3 +26,6 @@
 | Cache        | Memory (refactor)             |                    |                  |                          |        X         |
 |              | Direct mapped cache           |                    |                  |                          |        X         |
 |              | Two-way set associative cache |                    |                  |                          |        X         |
+
+
+# Personal Statements
