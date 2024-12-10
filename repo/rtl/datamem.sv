@@ -11,11 +11,11 @@ module datamem #(
     output logic [data_width-1:0] rd
 );
  
-    logic [memory_size-1:0] array [2**17-1:0];
+    logic [memory_size-1:0] array [32'h0001FFFF:0];
  
     initial begin
         $display("Loading data into data memory...");
-        $readmemh("../tb/data.hex", array, 17'h10000, 17'h1FFFF);
+        $readmemh("../tb/data.hex", array, 32'h10000);
     end
  
 // Read logic with extension
