@@ -71,40 +71,11 @@ TEST_F(CpuTestbench, TestPipelineTiming)
 
 TEST_F(CpuTestbench, TestHalfWords)
 {
-    setupTest("13_halfW");
+    setupTest("10_halfW");
     initSimulation();
     runSimulation(CYCLES);
     EXPECT_EQ(top_->a0, 0xBE01);
 }
-
-// TEST_F(CpuTestbench, TestBuild)
-// {
-//     setupTest("10_build");
-//     setData("reference/gaussian.mem");
-//     initSimulation();
-//     runSimulation(CYCLES * 100);
-//     EXPECT_EQ(top_->a0, 200);
-// }
-
-// TEST_F(CpuTestbench, TestBuild)
-// {
-//     setupTest("11_basepdf");
-//     setData("reference/gaussian.mem");
-//     initSimulation();
-//     runSimulation(CYCLES * 100);
-//     EXPECT_EQ(top_->a0, 200);
-// }
-
-// TEST_F(CpuTestbench, TestDisplay)
-// {
-//     setupTest("12_display");
-//     setData("reference/gaussian.mem");
-//     initSimulation();
-//     runSimulation(CYCLES * 100);
-//     EXPECT_EQ(top_->a0, 0);
-// }
-
-
 
 TEST_F(CpuTestbench, TestPdf)
 {
