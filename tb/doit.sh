@@ -33,6 +33,11 @@ rm -rf test_out/*
 for file in "${files[@]}"; do
     name=$(basename "$file" _tb.cpp | cut -f1 -d\-)
 
+    # If one of the graph, ignore test
+    if [[ "$file" == *"gaussian_mytb.cpp" || "$file" == *"noisy_mytb.cpp" || "$file" == *"triangle_mytb.cpp" || "$file" == *"vbuddy.cpp" ]]; then
+        continue
+    fi
+# 
     # If verify.cpp -> we are testing the top module
     if [ $name == "verify.cpp" ]; then
         name="top"
