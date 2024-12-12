@@ -65,7 +65,7 @@ int main(int argc, char **argv, char **env)
 
         // Exit simulation if Vbuddy or Verilator finishes
         if (Verilated::gotFinish() || vbdGetkey() == '`')
-            exit(0);
+            break;
     }
 
     vbdClose(); // ++++

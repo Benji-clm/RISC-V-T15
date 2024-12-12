@@ -11,7 +11,9 @@ int main(int argc, char **argv, char **env)
     int tick;       // each clk cycle has two ticks for two edges
     int lights = 0; // state to toggle LED lights
 
-    system("./compile.sh f1.S");
+    std::ignore = system(("./assemble.sh asm/f1.s"));
+    // Create empty file for data memory
+    std::ignore = system("touch data.hex");
 
     Verilated::commandArgs(argc, argv);
     // init top verilog instance
@@ -25,7 +27,7 @@ int main(int argc, char **argv, char **env)
     // init Vbuddy
     if (vbdOpen() != 1)
         return (-1);
-    vbdHeader("F1 Lights - Vbuddy");
+    vbdHeader("F1 Lights");
     vbdSetMode(1); // Flag mode set to one-shot
 
     // initialize simulation inputs
@@ -56,10 +58,15 @@ int main(int argc, char **argv, char **env)
         vbdCycle(simcyc);
 
         if (Verilated::gotFinish() || vbdGetkey() == '`')
-            exit(0);
+            break;
     }
 
     vbdClose(); // ++++
     tfp->close();
+    if (top) delete top;
+    if (tfp) delete tfp;
+    std::ignore = std::remove("data.hex");
+    std::ignore = std::remove("program.hex");
+
     exit(0);
 }
