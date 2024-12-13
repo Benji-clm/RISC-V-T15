@@ -9,7 +9,7 @@
 ## Personal Statements
 - [Personal Statement Augustin Briens](https://github.com/Benji-clm/RISC-V-T15/blob/master/docs/Personal%20Statement%20Augustin%20Briens.md)
 - Personal Statement Benjamin Clemente
-- [Personal Statement Selime Ozyurt](#docs/"Personal Statement Selime Ozyurt.md")
+- [Personal Statement Selime Ozyurt](#docs/Personal%20Statement%20Selime%20Ozyurt.md)
 - Personal Statement Alix Le Coguic
 
 ## Table of Contemts
