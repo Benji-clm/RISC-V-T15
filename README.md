@@ -24,13 +24,14 @@
   - [4 Stages of Pipeline](docs/Personal%20Statement%20Selime%20Ozyurt.md#pipeline) (Alix Le Coguic, Selime Ozyurt)
   - [Hazard Unit](#hazard-unit) (Benjamin Clemente) 
 - [Caches](#caches)
-  - [Data Cache](#data-cache) (Augustin Briens)
+  - [Data Cache](#data-cache) (Augustin Briens, Benjamin Clemente)
   - [Top Memory](#top-memory) (Augustin Briens)
   - [Instruction Memory Cache](#i-mem-cache) (Augustin Briens)
 - [Top Level](#top-level)
   - [Top file CPU](#top-file) (Benjamin Clemente, Augustin Briens)
   - [Testbenches](#testbenches) (Benjamin Clemente, Augustin Briens)
   - [CPU Tests](#cpu-tests) (Benjamin Clemente, Augustin Briens)
+- [Branch Prediction](#branch-prediction) (Benjamin Clemente)
 
 
 ## Important Notes
@@ -39,10 +40,22 @@
 
 ## Quick Start
 ### Prerequisite:
-Before running **any** script, ensure you are in the correct path. Use the following command to navigate:
-```bash
-cd tb
-```
+First, make your way to the **testbench** folder, using `cd tb`. \
+The main script is `doit.sh` which runs all the tests **within the `tests` folder**.
+
+> For simplicity, the **unit tests** are by default within the `unit_tests` folder, if you want to use these tests, simply move them to the `test` folder.
+
+<br>
+
+Below is a table listing the different shell scripts, and their use:
+
+| Command                               | Behaviour                           |
+| ------------------------------------- |-------------------------------------- |
+| `./doit.sh`                           | Runs all the test benches within `tb/tests`            |
+| `./f1.sh`     | Runs the `f1-lights` program|
+| `./gaussian.sh`       | Plots the `gaussian` graph    |
+| `./triangle.sh`       | Plots the `triangle` graph    |
+| `./noisy.sh`       | Plots the `noisy` graph    |
 ## Overview
 ### Contribution Table
 |              |                               | Selime | Alix | Ben | Augustin |
@@ -71,6 +84,7 @@ cd tb
 | Cache        | Memory (refactor)             |                    |                  |                          |        X         |
 |              | Direct mapped cache           |                    |                  |                          |        X         |
 |              | Two-way set associative cache |                    |                  |                          |        X         |
+|Branch Prediction |                            |                    |                  |           X             |        X         |
 | Other | F1 | | |X| |
 |       | Vbuddy | | |X| |
 
@@ -137,12 +151,6 @@ https://github.com/user-attachments/assets/44fff449-ee35-4557-bbde-f1ac81cde5f5
     Integration of CPU components at the top level and harmonisation of Inputs and Outputs
   - [Testbenches](#testbenches)  
     Creation of testbenches for verifying CPU functionality:
- 
-    
-    <img width="188" alt="Screenshot 2024-12-13 at 12 16 00" src="https://github.com/user-attachments/assets/84059bbf-8bef-40a8-8b5b-956512b6fd7e" />
 
-  - [CPU Tests](#cpu-tests)  
-    See below for the tests in Assembly:
- 
-    
-    <img width="156" alt="Screenshot 2024-12-13 at 12 15 18" src="https://github.com/user-attachments/assets/3c343c69-1182-4a5f-879d-8728e39a704c" />
+  - [CPU Tests](#cpu-tests) 
+
