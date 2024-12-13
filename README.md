@@ -78,6 +78,12 @@ cd tb
 ### Proof Of Working CPU on Vbuddy:
 #### F1
 
+
+
+https://github.com/user-attachments/assets/e46eef8f-4ca8-4211-bf2e-87545c885bf0
+
+
+
 #### Gaussian
 
 https://github.com/user-attachments/assets/b1405c37-26fd-4ebb-8ade-5423f77de3d8
