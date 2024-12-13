@@ -1,9 +1,9 @@
 
-> **Note:** not all files from the FPGA work were uploaded, only the ones necessary for users to compile and run the tests themselves on **Quartus**.
-### Video Evidence
+## Video Evidence
 
 
-### Objective
+
+## Objective
 
 I decided to take the route of the FPGA, as, although simulation can be a great tool, it is **unaffected by real-world** constraints and exists under a perfect environment, being simulated cycle-by-cycle. The FPGA allowed us to refined our design, and ensure it wasn't only theoretically sound, but also **functional in a physical hardware environment**.
 
@@ -11,7 +11,13 @@ For simplicity, I decided to only synthesise the **pipelined version** of the CP
 
 I chose to use the *DE10-Lite* as our FPGA, as it will be the FPGA used next-term for the Information-processing module.
 
-### Hardware Modification
+<br>
+
+> **Note:** not all files from the FPGA work were uploaded, only the ones necessary for users to compile and run the tests themselves on **Quartus**.
+
+<br>
+
+## Hardware Modification
 
 I first had to change from simply using **arrays** for the memories, to using the **MAX10** architecture memories, provided within Quartus for the **DE10-Lite**.
 
@@ -221,9 +227,12 @@ endmodule
 
 ```
 <br>
+
 Finally, due to timing issues, I have to use `~clk`  (@ negedge) within the **clocked memories**, as there was a mismatch of one cycle between the **pc counter** and the **instruction memory**.
 
-### Testing
+<br>
+
+## Testing
 
 To be able to test our design I did **two things**:
 - Create an equivalent of the FPGA design for Verilator, allowing for easier testing.
