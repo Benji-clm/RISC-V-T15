@@ -1,137 +1,136 @@
-**Selime Ozyurt Personal Statement**
+# Selime Ozyurt Personal Statement
 
-Name: Selime Nur Ozyurt
-CID: 02493530
+* Name: Selime Nur Ozyurt
+* CID: 02493530
+
+## Table of Contents
+- [Summary] (#summary)
+- [Contributions] (#contributions)
+- [Self-Reflection] (#self-reflection)
+- [Additional-Notes] (#additional-notes)
 
 
 
-**Summary**
+## Summary
 
 I was responsible for several key components of the project, including the program counter, instruction memory, fetch-decode and decode-execute pipelines, and the assembly code. I also worked collaboratively with Alix to design and implement the register file.
 In this report, I will focus on summarizing my contributions and reflecting on the project.
 ________________________________________
 
-**Contributions**
+## Contributions
 
-**Lab 4**
+# Lab 4
 
-**Program Counter Block**
-
+# Program Counter Block
 I was responsible for designing and implementing the counter block, which includes the program counter (PC), branch address calculation, and next PC selection. My tasks included:
-•	Implementing the PC register to hold the current instruction address.
-•	Adding logic for branch address computation using the immediate operand (ImmOp) and PC source (PCsrc) control signal.
-•	Integrating the increment (+4) operation for non-branching instructions.
-•	Ensuring the proper functionality of the next PC selection logic, switching between branch and incremented PC based on control signals.
+* Implementing the PC register to hold the current instruction address.
+* Adding logic for branch address computation using the immediate operand (ImmOp) and PC source (PCsrc) control signal.
+* Integrating the increment (+4) operation for non-branching instructions.
+* Ensuring the proper functionality of the next PC selection logic, switching between branch and incremented PC based on control signals.
 
-**Unit Testing:** 
-
+# Unit Testing
 I wrote unit tests to validate the correctness of each stage in the counter block and its integration with the rest of the processor. These tests covered:
-•	Branch address calculation accuracy.
-•	Correct increment operation for sequential instructions.
-•	Handling control signals and edge cases for branching behavior.
-Integration and Debugging: I ensured the PC block functioned correctly by integrating it with the single-cycle processor. I debugged issues by isolating the program counter behavior and verifying its interaction with control signals and the instruction memory.
+* Branch address calculation accuracy.
+* Correct increment operation for sequential instructions.
+* Handling control signals and edge cases for branching behavior.
 
-**Register File**
+# Integration and Debugging: 
+I ensured the PC block functioned correctly by integrating it with the single-cycle processor. I debugged issues by isolating the program counter behavior and verifying its interaction with control signals and the instruction memory.
 
+# Register File
 For this part we worked collaboratively with Alix. The register file was designed to store 32 general-purpose, 32-bit registers with dual read ports (RD1, RD2) and a single write port (WD3) for simultaneous operations. We implemented address decoding and incorporated the RegWrite control signal to ensure synchronized write operations on the rising edge of the clock signal (CLK).
 
-**Unit Testing:**
-
+# Unit Testing:
 We developed and executed comprehensive unit tests to ensure the functionality and robustness of the register file. These tests included:
-•	Verifying correct data reads from RD1 and RD2 for given input addresses.
-•	Testing write operations to confirm data integrity when using the RegWrite signal.
-•	Simulating edge cases such as simultaneous read and write operations to detect and resolve potential hazards.
+* Verifying correct data reads from RD1 and RD2 for given input addresses.
+* Testing write operations to confirm data integrity when using the RegWrite signal.
+* Simulating edge cases such as simultaneous read and write operations to detect and resolve potential hazards.
 
-**Integration and Debugging:**
-
+# Integration and Debugging:
 During integration with the single-cycle processor, we worked to ensure seamless communication between the register file, the control unit, and the ALU.
-•	Addressed data hazards and ensured the proper timing of data availability for dependent instructions.
-•	Debugged issues related to incorrect register reads/writes by tracing signal paths and analyzing interactions with the control signals.
+* Addressed data hazards and ensured the proper timing of data availability for dependent instructions.
+* Debugged issues related to incorrect register reads/writes by tracing signal paths and analyzing interactions with the control signals.
 
 
-**Single Cycle Processor**
+# Single Cycle Processor
 
-**Program Counter Enhancements**
+# Program Counter Enhancements
 
 Building on my work in Lab 4, I refined the program counter (PC) block for the single-cycle processor. This included ensuring smooth integration of the program counter with the instruction memory and debugging its interaction with control signals.
 
-**Branch Logic and Immediate Operand:** 
-
+# Branch Logic and Immediate Operand:
 I adjusted the branch address computation and integrated it seamlessly with the immediate operand (ImmOp) generated by the sign extension unit. This ensured correct branching behavior across test cases.
 Instruction Memory Debugging: I provided support for debugging issues in instruction fetching, addressing misalignments, and ensuring proper instruction decoding.
 
-**Unit Testing:** 
-
+# Unit Testing:
 I created targeted unit tests to validate:
 Proper PC increment functionality for sequential instructions.
-•	Correct address computation for branching scenarios.
-•	Interaction between PC, instruction memory, and control unit under various test cases.
+* Correct address computation for branching scenarios.
+* Interaction between PC, instruction memory, and control unit under various test cases.
 
-**Register File**
-
+# Register File
 Enhancing our work from Lab4, we ensured that the Register File is still compatible with rest of the CPU. We introduced some unit test, which helped us debug any integration problems. We managed data conflicts by guaranteeing proper timing for dependent instructions and identified register read/write errors by examining signal flow and control interactions.
 
-**Pipeline**
+# Pipeline
 
-**Fetch-Decode Pipeline**
-
+# Fetch-Decode Pipeline
 I was responsible for implementing and refining the fetch-decode pipeline stage. This included:
-•	Ensuring smooth instruction flow from the program counter (PC) to the instruction memory and into the decode stage.
-•	Designing and implementing the pipeline register to transfer the fetched instruction and PC values to the decode stage while maintaining synchronization with the clock cycle.
-•	Debugging and testing the interaction of this stage with upstream and downstream components to avoid data mismatches and timing errors.
+* Ensuring smooth instruction flow from the program counter (PC) to the instruction memory and into the decode stage.
+* Designing and implementing the pipeline register to transfer the fetched instruction and PC values to the decode stage while maintaining synchronization with the clock cycle.
+* Debugging and testing the interaction of this stage with upstream and downstream components to avoid data mismatches and timing errors.
 Developing unit tests to validate:
-•	Correct instruction fetching from memory.
-•	Proper transfer of fetched instructions and the PC value to the decode stage.
-•	Handling of invalid instructions and edge cases (e.g., unaligned memory addresses).
+* Correct instruction fetching from memory.
+* Proper transfer of fetched instructions and the PC value to the decode stage.
+* Handling of invalid instructions and edge cases (e.g., unaligned memory addresses).
 
-**Decode-Execute Pipeline**
-
+# Decode-Execute Pipeline
 I also contributed to the decode-execute stage, focusing on translating instruction fields into control signals and operands for the execution stage. My responsibilities included:
 Designing the decode pipeline register to pass processed instruction data and control signals to the execute stage.
-•	Integrating the operand fetch logic, including register file read operations and sign extension of immediate values.
-•	Debugging the pipeline register interactions with both the fetch-decode and execute stages to ensure consistent data propagation and synchronization.
+* Integrating the operand fetch logic, including register file read operations and sign extension of immediate values.
+* Debugging the pipeline register interactions with both the fetch-decode and execute stages to ensure consistent data propagation and synchronization.
 Writing comprehensive unit tests for:
-•	Accurate decoding of instruction fields and generation of control signals.
-•	Correct operand fetching, including handling of immediate and register-based values.
-•	Smooth handoff of data to the execute stage, ensuring consistency under varying test scenarios.
+* Accurate decoding of instruction fields and generation of control signals.
+* Correct operand fetching, including handling of immediate and register-based values.
+* Smooth handoff of data to the execute stage, ensuring consistency under varying test scenarios.
 
-**Integration and Testing**
+# Integration and Testing
+* I focused on validating the smooth interaction of the fetch-decode and decode-execute stages with the overall pipeline design.
+* This included testing inter-stage communication and ensuring proper handling of data dependencies and synchronization issues.
 
-•	I focused on validating the smooth interaction of the fetch-decode and decode-execute stages with the overall pipeline design.
-•	This included testing inter-stage communication and ensuring proper handling of data dependencies and synchronization issues.
-
-**Assembly Code**
-
+# F1 Assembly Code
 The primary goal of this assembly code was to design a counter that iterates from 0 to 8, introduces a delay at each increment, and resets after completion. The implementation highlights effective use of RISC-V instructions to manage control flow, counters, and delays, ensuring functionality and modularity.
 The design involved initializing registers to manage the counter, delay, and temporary variables, with control flow handled via branching instructions (beq and bne) for smooth transitions. The delay mechanism used a nested loop (lightdelay) to simulate timing constraints. Key challenges included ensuring proper resets and avoiding infinite loops, requiring careful debugging of register initialization and branching conditions.
+
 The design made effective use of the jal instruction for modularity, enabling seamless jumps to subroutines like lightdelay and maintaining clear control flow. Managing the return address (ra) ensured smooth execution and reusability of code.
 
-**Self-reflection**
+## Self-reflection
 
-**What I Learned**
+# What I Learned**
 
-Advancing Git Proficiency: Before starting this project, my understanding of Git was fairly basic. Throughout the process, I enhanced my ability to use Git for version control, including frequently applying commands like add, commit, and push. This experience also introduced me to resolving merge conflicts and managing collaborative contributions, making me much more confident with Git workflows.
+* **Advancing Git Proficiency:** Before starting this project, my understanding of Git was fairly basic. Throughout the process, I enhanced my ability to use Git for version control, including frequently applying commands like add, commit, and push. This experience also introduced me to resolving merge conflicts and managing collaborative contributions, making me much more confident with Git workflows.
 
-SystemVerilog Application: This project enabled me to apply my theoretical knowledge of SystemVerilog in a real-world context. By working on components such as the program counter, instruction memory, and various pipeline stages, I gained hands-on experience and strengthened my ability to debug and refine hardware descriptions effectively.
+* **SystemVerilog Application:**  This project enabled me to apply my theoretical knowledge of SystemVerilog in a real-world context. By working on components such as the program counter, instruction memory, and various pipeline stages, I gained hands-on experience and strengthened my ability to debug and refine hardware descriptions effectively.
 
-RISC-V Assembly Mastery: Writing and debugging RISC-V assembly code greatly enhanced my understanding of low-level programming. I gained insight into how assembly instructions directly interact with hardware components and learned how to create more effective and optimized tests for the CPU.
+* **RISC-V Assembly Mastery:** Writing and debugging RISC-V assembly code greatly enhanced my understanding of low-level programming. I gained insight into how assembly instructions directly interact with hardware components and learned how to create more effective and optimized tests for the CPU.
 
-Collaborative Development: Partnering with Alix to design and implement the register file highlighted the importance of teamwork. This collaboration taught me to communicate better, divide responsibilities efficiently, and merge different ideas into a cohesive design.
+* **Collaborative Development:** Partnering with Alix to design and implement the register file highlighted the importance of teamwork. This collaboration taught me to communicate better, divide responsibilities efficiently, and merge different ideas into a cohesive design.
 
-Integrating Concepts: This project gave me the opportunity to bridge the gap between classroom learning and practical implementation. Turning abstract concepts into a functioning CPU pipeline provided a sense of accomplishment and deepened my grasp of computer architecture.
+* **Integrating Concepts:** This project gave me the opportunity to bridge the gap between classroom learning and practical implementation. Turning abstract concepts into a functioning CPU pipeline provided a sense of accomplishment and deepened my grasp of computer architecture.
 ________________________________________
 
-**What I Would've Done Differently / Mistakes I Made**
+# What I Would've Done Differently / Mistakes I Made**
 
-Optimizing Git Practices: I missed the opportunity to use Git’s advanced features, such as co-authoring commits for transparency in contributions and consolidating commit histories for a cleaner project timeline. Adopting these practices could have made the workflow more organized and efficient.
+* **Optimizing Git Practices:** I missed the opportunity to use Git’s advanced features, such as co-authoring commits for transparency in contributions and consolidating commit histories for a cleaner project timeline. Adopting these practices could have made the workflow more organized and efficient.
 
-Improving Testbench Skills: My involvement in developing the testbench could have been greater. By contributing more to this aspect, I could have enhanced my debugging process and ensured a more robust testing framework for catching potential errors.
+* **Improving Testbench Skills:** My involvement in developing the testbench could have been greater. By contributing more to this aspect, I could have enhanced my debugging process and ensured a more robust testing framework for catching potential errors.
 
 ________________________________________
-**Additional Notes**
+## Additional Notes
 
-Acknowledgments: I want to extend my appreciation to all of my team mates for their support and collaboration on the project. Their input and teamwork were invaluable to the success of this project.
+**Acknowledgments:** 
+I want to extend my appreciation to all of my team mates for their support and collaboration on the project. Their input and teamwork were invaluable to the success of this project.
 
-Overall Experience: Despite the challenges, this project has been an incredibly rewarding journey. It was an opportunity to see my academic knowledge materialize into a functioning system, which has given me a deeper appreciation for the complexities of CPU design and development.
+**Overall Experience:** 
+Despite the challenges, this project has been an incredibly rewarding journey. It was an opportunity to see my academic knowledge materialize into a functioning system, which has given me a deeper appreciation for the complexities of CPU design and development.
 
 
