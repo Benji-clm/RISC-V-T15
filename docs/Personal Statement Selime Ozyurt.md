@@ -7,7 +7,7 @@
 - [Summary](#summary)
 - [Contributions](#contributions)
 - [Self-Reflection](#self-reflection)
-- [Additional-Notes(#additional-notes)
+- [Additional-Notes](#additional-notes)
 
 
 
@@ -37,7 +37,7 @@ I wrote unit tests to validate the correctness of each stage in the counter bloc
 ### Integration and Debugging: 
 I ensured the PC block functioned correctly by integrating it with the single-cycle processor. I debugged issues by isolating the program counter behavior and verifying its interaction with control signals and the instruction memory.
 
-# Register File
+### Register File
 For this part we worked collaboratively with Alix. The register file was designed to store 32 general-purpose, 32-bit registers with dual read ports (RD1, RD2) and a single write port (WD3) for simultaneous operations. We implemented address decoding and incorporated the RegWrite control signal to ensure synchronized write operations on the rising edge of the clock signal (CLK).
 
 ### Unit Testing:
@@ -105,7 +105,7 @@ The design made effective use of the jal instruction for modularity, enabling se
 
 ## Self-reflection
 
-### What I Learned**
+### What I Learned
 
 * **Advancing Git Proficiency:** Before starting this project, my understanding of Git was fairly basic. Throughout the process, I enhanced my ability to use Git for version control, including frequently applying commands like add, commit, and push. This experience also introduced me to resolving merge conflicts and managing collaborative contributions, making me much more confident with Git workflows.
 
@@ -118,7 +118,7 @@ The design made effective use of the jal instruction for modularity, enabling se
 * **Integrating Concepts:** This project gave me the opportunity to bridge the gap between classroom learning and practical implementation. Turning abstract concepts into a functioning CPU pipeline provided a sense of accomplishment and deepened my grasp of computer architecture.
 ________________________________________
 
-### What I Would've Done Differently / Mistakes I Made**
+### What I Would've Done Differently / Mistakes I Made
 
 * **Optimizing Git Practices:** I missed the opportunity to use Git’s advanced features, such as co-authoring commits for transparency in contributions and consolidating commit histories for a cleaner project timeline. Adopting these practices could have made the workflow more organized and efficient.
 
