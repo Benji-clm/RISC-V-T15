@@ -47,13 +47,9 @@ int main(int argc, char **argv, char **env)
             top->eval();
         }
 
-        if ((top->a0) >= 1 && (top->a0) < 0x3c03 && simcyc % 6 == 0){
+        if ((top->a0) >= 1 && (top->a0) < 0x3c03 && simcyc % 4 == 0){
             vbdPlot(top->a0, 0, 255);
             vbdCycle(simcyc);
-            // vbdHex(4, (int(top->a0) >> 12) & 0xF);
-            // vbdHex(3, (int(top->a0) >> 8) & 0xF);
-            // vbdHex(2, (int(top->a0) >> 4) & 0xF);
-            // vbdHex(1, int(top->a0) & 0xF);
         }
         
 

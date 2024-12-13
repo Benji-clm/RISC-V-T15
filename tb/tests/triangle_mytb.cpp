@@ -49,17 +49,9 @@ int main(int argc, char **argv, char **env)
 
         
 
-        if (simcyc > 513530 && (top->a0) < 0x99ec && simcyc % 8 == 0){
+        if (simcyc > 434300 && (top->a0) < 0x99ec && simcyc % 6 == 0){
             vbdPlot(top->a0, 0, 255);
             vbdCycle(simcyc);
-            if(vbdFlag()){
-                std::cout << simcyc << std::endl;
-            break;
-        }
-            // vbdHex(4, (int(top->a0) >> 12) & 0xF);
-            // vbdHex(3, (int(top->a0) >> 8) & 0xF);
-            // vbdHex(2, (int(top->a0) >> 4) & 0xF);
-            // vbdHex(1, int(top->a0) & 0xF);
         }
         
 

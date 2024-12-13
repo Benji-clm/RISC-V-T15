@@ -47,7 +47,7 @@ int main(int argc, char **argv, char **env)
             top->eval();
         }
 
-        if ((top->a0) >= 1 && (top->a0) < 0x3c03 && simcyc % 8 == 0){
+        if ((top->a0) >= 1 && (top->a0) < 0x3c03 && simcyc % 6 == 0){
             vbdPlot(top->a0, 0, 255);
             vbdCycle(simcyc);
         }
