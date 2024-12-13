@@ -44,7 +44,7 @@ module dmem_top #(
     dmem(
         .address(address),
         .byteena(byteena),
-        .clock(clk),
+        .clock(~clk),
         .data(wd),
         .wren(we),
         .q(q)
