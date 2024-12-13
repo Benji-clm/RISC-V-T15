@@ -1,0 +1,17 @@
+WIDTH=32;
+DEPTH=4096;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+  000 : FFF00313; -- li t1, 0xFFF
+  001 : 00000513; -- li a0, 0
+  002 : 00000593; -- li a1, 0
+  003 : 00058513; -- mv a0, a1
+  004 : 00158593; -- addi a1, a1, 1
+  005 : FE659CE3; -- bne a1, t1, bfc0000c <iloop>
+  006 : 00051263; -- bnez a0, bfc0001c <finish>
+  007 : 00051063; -- bnez a0, bfc0001c <finish>
+  [008..FFF] : 00000000; -- Fill remaining addresses with zero
+END;

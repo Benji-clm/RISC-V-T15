@@ -1,0 +1,18 @@
+WIDTH=32;
+DEPTH=4096;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+  000 : 03200313; -- li t1,50
+  001 : 010000EF; -- jal ra, bfc00014 <add_one>
+  002 : 00C000EF; -- jal ra, bfc00014 <add_one>
+  003 : 008000EF; -- jal ra, bfc00014 <add_one>
+  004 : 00C0006F; -- j bfc0001c <finish>
+  005 : 00130313; -- addi t1, t1, 1
+  006 : 00008067; -- ret
+  007 : 00030513; -- mv a0, t1
+  008 : 00051063; -- bnez a0, bfc00020 <_wait>
+  [009..FFF] : 00000000; -- Fill remaining addresses with zero
+END;

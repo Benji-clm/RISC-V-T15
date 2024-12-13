@@ -1,0 +1,37 @@
+WIDTH=32;
+DEPTH=4096;
+
+ADDRESS_RADIX=HEX;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+  000 : 00100493; -- li s1,1
+  001 : 0FF00913; -- li s2,255
+  002 : 00300993; -- li s3,3
+  003 : 00100693; -- li a3,1
+  004 : 00000513; -- li a0,0
+  005 : 00000713; -- li a4,0
+  006 : 00000293; -- li t0,0
+  007 : 02928263; -- beq t0,s1,bfc00040 <fsm>
+  008 : 0036D613; -- srli a2,a3,0x3
+  009 : 00167613; -- andi a2,a2,1
+  00A : 00D64633; -- xor a2,a2,a3
+  00B : 00167613; -- andi a2,a2,1
+  00C : 00169693; -- slli a3,a3,0x1
+  00D : 00C686B3; -- add a3,a3,a2
+  00E : 00F6F693; -- andi a3,a3,15
+  00F : FE1FF0EF; -- jal ra,bfc0001c <mainloop>
+  010 : 020000EF; -- jal ra,bfc00060 <lightdelay>
+  011 : 00151313; -- slli t1,a0,0x1
+  012 : 00130513; -- addi a0,t1,1
+  013 : FF251AE3; -- bne a0,s2,bfc00040 <fsm>
+  014 : FCD700E3; -- beq a4,a3,bfc00010 <rst>
+  015 : 00C000EF; -- jal ra,bfc00060 <lightdelay>
+  016 : 00170713; -- addi a4,a4,1
+  017 : FF5FF0EF; -- jal ra,bfc00050 <increment>
+  018 : 00158593; -- addi a1,a1,1
+  019 : FF359EE3; -- bne a1,s3,bfc00060 <lightdelay>
+  01A : 00000593; -- li a1,0
+  01B : 00008067; -- ret
+  [01C..FFF] : 00000000; -- Fill remaining addresses with zero
+END;
