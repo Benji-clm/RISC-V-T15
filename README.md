@@ -9,19 +9,19 @@
 ## Personal Statements
 - [Personal Statement Augustin Briens](https://github.com/Benji-clm/RISC-V-T15/blob/master/docs/Personal%20Statement%20Augustin%20Briens.md)
 - Personal Statement Benjamin Clemente
-- [Personal Statement Selime Ozyurt](#docs/Personal%20Statement%20Selime%20Ozyurt.md)
+- [Personal Statement Selime Ozyurt](docs/Personal%20Statement%20Selime%20Ozyurt.md)
 - Personal Statement Alix Le Coguic
 
 ## Table of Contemts
 - [Single Cycle](#single-cycle)
-  - [Program-Countr](#docs/Personal%20Statement%20Selime%20Ozyurt.md#program-counter-block) (Selime Nur Ozyurt)
-  - [Register-File](#docs/Personal%20Statement%20Selime%20Ozyurt.md#register-file)
+  - [Program-Countr](docs/Personal%20Statement%20Selime%20Ozyurt.md#program-counter-block) (Selime Nur Ozyurt)
+  - [Register-File](docs/Personal%20Statement%20Selime%20Ozyurt.md#register-file)
   - F1 Program (Benjamin Clemente, Alix Le Coguic)
   - [Instruction Memory](#instruction-memory) (Selime Ozyurt, Augustin Briens)
   - [ALU](#alu) (Augustin Briens)
   - [Data Memory](#data-memory) (Alix Le Coguic)   
 - [Pipeline](#pipeline)
-  - 4 Stages of [Pipeline](#docs/Personal%20Statement%20Selime%20Ozyurt.md#pipeline) (Alix Le Coguic, Selime Ozyurt)
+  - [4 Stages of Pipeline](docs/Personal%20Statement%20Selime%20Ozyurt.md#pipeline) (Alix Le Coguic, Selime Ozyurt)
   - [Hazard Unit](#hazard-unit) (Benjamin Clemente) 
 - [Caches](#caches)
   - [Data Cache](#data-cache) (Augustin Briens)
