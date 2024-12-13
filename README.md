@@ -150,7 +150,7 @@ https://github.com/user-attachments/assets/44fff449-ee35-4557-bbde-f1ac81cde5f5
   - [Top file CPU](#top-file)  
     Integration of CPU components at the top level and harmonisation of Inputs and Outputs
   - [Testbenches](#testbenches)  
-    Creation of testbenches for verifying CPU functionality:
+    Creation of testbenches for unit-testing CPU functionality:
 
   - [CPU Tests](#cpu-tests) 
-
+    Creation of Assembly codes and test benches for integration testing of the CPU
