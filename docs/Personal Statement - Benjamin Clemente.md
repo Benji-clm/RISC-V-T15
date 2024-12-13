@@ -1,6 +1,6 @@
-Name: Benjamin Clemente
-CID: 02401985
-GitHub username: Benji-clm
+Name: Benjamin Clemente \
+CID: 02401985 \
+GitHub username: Benji-clm \
 
 ## Summary
 
