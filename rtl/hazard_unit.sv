@@ -15,8 +15,7 @@ module hazard_unit(
     // outputs
     output logic            StallF,
     output logic            StallD,
-    output logic            FlushD,
-    output logic            FlushE,
+    output logic            Flush,
     output logic [1:0]      ForwardAE,
     output logic [1:0]      ForwardBE            
 );
@@ -65,8 +64,7 @@ always_comb begin
     StallF = lwStall;
     StallD = lwStall;
 
-    FlushD = Hazard_PCsrc;
-    FlushE = Hazard_PCsrc;
+    Flush = Hazard_PCsrc;
 end
 
 

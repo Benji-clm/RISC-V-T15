@@ -18,9 +18,9 @@
 // Defining opcodes for the different branching conditions -> allows for several B-type operations
 // The opcode will help us determine how to check whether we branch or not (combined with `eq`).
 `define NEXT_PC         3'b000
-`define EQ_TRUE         3'b001
+`define EQ_TRUE         3'b011
 `define EQ_FALSE        3'b010
-`define UC_JUMP         3'b011
+`define UC_JUMP         3'b101
 `define JALR            3'b100
 
 // Defining the type of instr for SignExtend to correctly extend Immediate

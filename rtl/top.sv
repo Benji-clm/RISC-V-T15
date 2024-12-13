@@ -89,8 +89,7 @@ logic [DATA_WIDTH-1:0]      rd;
 logic                       Hazard_PCsrc;
 logic                       StallF;
 logic                       StallD;
-logic                       FlushD;
-logic                       FlushE;
+logic                       Flush;
 logic [1:0]                 ForwardAE;
 logic [1:0]                 ForwardBE;
 
@@ -99,29 +98,60 @@ logic MemReadE;
 logic MemReadM;
 
 // control unit
-logic [6:0]            op;
-logic [2:0]            funct3;
-logic [6:0]            funct7;
+logic [6:0]                 op;
+logic [2:0]                 funct3;
+logic [6:0]                 funct7;
 
-logic [31:7]           instr_ext;
+logic [31:7]                instr_ext;
 
-assign PCPlus4F = pcF +4;
+
+// Branch prediction
+logic [ADDRESS_WIDTH-1:0]   targetE;
+logic                       branch_predictF;
+logic                       branch_predictD;
+logic                       branch_predictE;
+logic [ADDRESS_WIDTH-1:0]   branch_target;
+logic [ADDRESS_WIDTH-1:0]   pc;
+logic                       prediction_penalty;
+
+assign PCPlus4F = pcF + 4;
+assign targetE  = pcE + ImmExtE;
 
 counter_module #(ADDRESS_WIDTH) pc_counter(
     .PCsrcE(PCsrcE),
     .PCPlus4F(PCPlus4F),
-    .PCTargetE(pcE + ImmExtE),
+    .PCTargetE(targetE),
     .ALUResult(ALUResult),
     .eq(eq),
+    .branch_predictE(branch_predictE),
     .Hazard_PCsrc(Hazard_PCsrc),
-    .pc(next_pc)
+    .pc(pc)
 );
 
+branch_pred #(ADDRESS_WIDTH, 64, 6) branch_prediction (
+    .clk(clk),
+    .reset(rst),
+    .pcF(pcF),
+    .pcE(pcE),
+    .branch_valid(PCsrcE[1]),
+    .branch_taken(Hazard_PCsrc),
+    .targetE(targetE),
+    .branch_predictF(branch_predictF),
+    .branch_targetF(branch_target)
+);
+
+assign prediction_penalty = (Hazard_PCsrc != branch_predictE);
+assign next_pc = branch_predictF ? branch_target : pc;
+
+
 always_ff @(posedge clk) begin
-    if (!StallF) begin
+    if (prediction_penalty && PCsrcE[1]) begin
+        pcF <= rst ? 32'h0 : pcE;
+    end
+    else if (!StallF) begin
         pcF <= rst ? 32'h0 : next_pc;
     end
-end
+end 
 
 i_cache cache (
     .clk(clk),
@@ -130,23 +160,24 @@ i_cache cache (
     .instr(instr)
 );
 
-
 fetch_decode_pipe #(DATA_WIDTH) pipeline_FD(
     .clk(clk),
 
     // controls
     .StallD(StallD),
-    .FlushD(FlushD),
+    .FlushD(Flush),
 
     // inputs
     .pcF(pcF),
     .instr(instr),
     .PCPlus4F(PCPlus4F),
+    .branch_predictF(branch_predictF),
 
     // outputs
     .instrD(instrD),
     .pcD(pcD),
-    .PCPlus4D(PCPlus4D)
+    .PCPlus4D(PCPlus4D),
+    .branch_predictD(branch_predictD)
 );
 
 assign op = instrD[6:0];
@@ -197,7 +228,7 @@ regf #(DATA_WIDTH) registers(
 decode_execute_pipe #(DATA_WIDTH) pipeline_DE_inst (
     // Pipeline control inputs
     .clk(clk),
-    .FlushE(FlushE),
+    .FlushE(Flush),
 
     // Control unit inputs
     .RegWriteD(RegWriteD),
@@ -217,7 +248,8 @@ decode_execute_pipe #(DATA_WIDTH) pipeline_DE_inst (
     .Rs2D(Rs2D),
     .RdD(RdD),
     .ImmExtD(ImmExtD),
-    .LS_modeD(LS_modeD),  
+    .LS_modeD(LS_modeD),
+    .branch_predictD(branch_predictD),  
 
     // Outputs to the next stage
     .RegWriteE(RegWriteE),
@@ -235,7 +267,8 @@ decode_execute_pipe #(DATA_WIDTH) pipeline_DE_inst (
     .RdE(RdE),
     .ImmExtE(ImmExtE),
     .LS_modeE(LS_modeE),
-    .MemReadE(MemReadE)
+    .MemReadE(MemReadE),
+    .branch_predictE(branch_predictE)
 );
 
 mux3 #(DATA_WIDTH) muxForwardAE(
@@ -340,7 +373,7 @@ hazard_unit hazard_unit_(
     .Rs1E(Rs1E),
     .Rs2E(Rs2E),
     .RdE(RdE),
-    .Hazard_PCsrc(Hazard_PCsrc),
+    .Hazard_PCsrc(prediction_penalty),
     .ResultSrcE(ResultSrcE[0]),
     .RdM(RdM),
     .RdW(RdW),
@@ -350,14 +383,9 @@ hazard_unit hazard_unit_(
     // outputs
     .StallF(StallF),
     .StallD(StallD),
-    .FlushD(FlushD),
-    .FlushE(FlushE),
+    .Flush(Flush),
     .ForwardAE(ForwardAE),
     .ForwardBE(ForwardBE)
 );
-
-
-
-
 
 endmodule

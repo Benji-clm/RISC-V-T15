@@ -24,6 +24,7 @@ module decode_execute_pipe #(
     input  logic [4:0]              RdD,
     input  logic [2:0]              LS_modeD,
     input  logic                    MemReadD,
+    input  logic                    branch_predictD,
  
     // outputs
     output logic                    RegWriteE,
@@ -42,7 +43,8 @@ module decode_execute_pipe #(
     output logic [4:0]              Rs2E,
     output logic [4:0]              RdE,
     output logic [2:0]              LS_modeE,
-    output logic                    MemReadE
+    output logic                    MemReadE,
+    output logic                    branch_predictE
 );
  
     always_ff @(posedge clk) begin
@@ -50,6 +52,7 @@ module decode_execute_pipe #(
             RegWriteE <= RegWriteD;
             MemWriteE <= MemWriteD;
             PCsrcE <= PCsrcD;
+            branch_predictE <= branch_predictD;
         end
  
         else begin
@@ -57,6 +60,7 @@ module decode_execute_pipe #(
             RegWriteE <= 0;
             MemWriteE  <= 0;
             PCsrcE    <= `NEXT_PC;
+            branch_predictE <= 1'b0;
         end
  
             // Pass the data
