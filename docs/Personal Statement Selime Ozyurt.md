@@ -1,4 +1,5 @@
 **Summary**
+
 I was responsible for several key components of the project, including the program counter, instruction memory, fetch-decode and decode-execute pipelines, and the assembly code. I also worked collaboratively with Alix to design and implement the register file.
 In this report, I will focus on summarizing my contributions and reflecting on the project.
 ________________________________________
@@ -51,9 +52,9 @@ Proper PC increment functionality for sequential instructions.
 **Register File**
 Enhancing our work from Lab4, we ensured that the Register File is still compatible with rest of the CPU. We introduced some unit test, which helped us debug any integration problems. We managed data conflicts by guaranteeing proper timing for dependent instructions and identified register read/write errors by examining signal flow and control interactions.
 
-**Pipeline **
+**Pipeline**
 
-**Fetch-Decode Pipeline **
+**Fetch-Decode Pipeline**
 I was responsible for implementing and refining the fetch-decode pipeline stage. This included:
 •	Ensuring smooth instruction flow from the program counter (PC) to the instruction memory and into the decode stage.
 •	Designing and implementing the pipeline register to transfer the fetched instruction and PC values to the decode stage while maintaining synchronization with the clock cycle.
