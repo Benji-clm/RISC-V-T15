@@ -80,11 +80,23 @@ cd tb
 
 #### Gaussian
 
+https://github.com/user-attachments/assets/b1405c37-26fd-4ebb-8ade-5423f77de3d8
+
+
 #### Noisy
 
-#### Sine
+
+
+https://github.com/user-attachments/assets/0a1737e9-e3f8-4969-b9c9-ad04d3b62692
+
+
 
 #### Triangle
+
+
+
+https://github.com/user-attachments/assets/44fff449-ee35-4557-bbde-f1ac81cde5f5
+
 
 ### Components
 - [Single Cycle](#single-cycle)
