@@ -86,9 +86,36 @@ TEST_F(CpuTestbench, TestPdf)
     EXPECT_EQ(top_->a0, 15363);
 }
 
+TEST_F(CpuTestbench, TestBGE)
+{
+    setupTest("11_bge"); 
+    initSimulation();
+    runSimulation(CYCLES);
+    EXPECT_EQ(top_->a0, 0x01);
+}
+
+TEST_F(CpuTestbench, TestBLTU)
+{
+    setupTest("12_bltu");
+    initSimulation();
+    runSimulation(CYCLES);
+    EXPECT_EQ(top_->a0, 0x01);
+}
+
+TEST_F(CpuTestbench, TestBGEU)
+{
+    setupTest("13_bgeu"); 
+    initSimulation();
+    runSimulation(CYCLES);
+    EXPECT_EQ(top_->a0, 0x01);
+}
+
+
 int main(int argc, char **argv)
 {
     testing::InitGoogleTest(&argc, argv);
     auto res = RUN_ALL_TESTS();
     return res;
 }
+
+
