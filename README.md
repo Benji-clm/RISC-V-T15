@@ -165,3 +165,8 @@ https://github.com/user-attachments/assets/3708280a-d42c-46a9-b9f2-aa22cacc589e
 
 - [Branch Prediction](##branch-prediction)
     Implementation of a two-bit predictor to improve the efficiency of conditional branch execution by reducing pipeline stalls and misprediction penalties.
+
+
+### FPGA
+
+For all the information about the FPGA work, refer to: [FPGA.md](https://github.com/Benji-clm/RISC-V-T15/blob/master/FPGA/FPGA.md)
