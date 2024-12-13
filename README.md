@@ -14,7 +14,7 @@
 
 ## Table of Contemts
 - [Single Cycle](#single-cycle)
-  - [Program-Countr](docs/Personal%20Statement%20Selime%20Ozyurt.md#program-counter-block) (Selime Nur Ozyurt)
+  - [Program-Counter](docs/Personal%20Statement%20Selime%20Ozyurt.md#program-counter-block) (Selime Nur Ozyurt)
   - [Register-File](docs/Personal%20Statement%20Selime%20Ozyurt.md#register-file)
   - F1 Program (Benjamin Clemente, Alix Le Coguic)
   - [Instruction Memory](#instruction-memory) (Selime Ozyurt, Augustin Briens)
