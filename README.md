@@ -3,7 +3,7 @@
 ## Group Members:
 - Alix Le Coguic
 - Selime Ozyurt
-- Benjamin Clemente (Repo Master)
+- Benjamin Clemente (Repo Master, Team Report Writer)
 - Augustin Briens (Team Report Writer)
 
 ## Personal Statements
@@ -84,7 +84,7 @@ Below is a table listing the different shell scripts, and their use:
 | Cache        | Memory (refactor)             |                    |                  |                          |        X         |
 |              | Direct mapped cache           |                    |                  |                          |        X         |
 |              | Two-way set associative cache |                    |                  |                          |        X         |
-|Branch Prediction |                            |                    |                  |           X             |        X         |
+|Branch Prediction |                            |                    |                  |           X             |                  |
 | Other | F1 | | |X| |
 |       | Vbuddy | | |X| |
 
@@ -117,6 +117,14 @@ https://github.com/user-attachments/assets/0a1737e9-e3f8-4969-b9c9-ad04d3b62692
 
 
 https://github.com/user-attachments/assets/44fff449-ee35-4557-bbde-f1ac81cde5f5
+
+
+
+#### FPGA
+
+
+
+https://github.com/user-attachments/assets/3708280a-d42c-46a9-b9f2-aa22cacc589e
 
 
 ### Components
@@ -154,3 +162,6 @@ https://github.com/user-attachments/assets/44fff449-ee35-4557-bbde-f1ac81cde5f5
 
   - [CPU Tests](#cpu-tests) 
     Creation of Assembly codes and test benches for integration testing of the CPU
+
+- [Branch Prediction](##branch-prediction)
+    Implementation of a two-bit predictor to improve the efficiency of conditional branch execution by reducing pipeline stalls and misprediction penalties.
