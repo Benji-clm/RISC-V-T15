@@ -2,28 +2,29 @@ Name: Benjamin Clemente
 CID: 02401985
 GitHub username: Benji-clm
 
-### Summary
+## Summary
 
 - I worked mainly on assembling the CPU and **testing**. I was also the repo-master.
 - I also did a fair share of code review, where I helped guide my teammates towards fixing their code, and sometimes fixed it myself.
 - I also worked a lot on the **FPGA**, where I was able to fully synthetize our CPU design onto the *DE10-Lite*, even achieving a theoretical $f_{max} = 300 MHz$.
 - Finally, I created a **2-bit branch unit**, which successfully improved speed by up to $20 \%$, and mitigated stalls and misprediction penalties.
 
-### Single-cycle CPU
+## Single-cycle CPU
 - Unit Testing for the Single-cycle CPU components: [1](https://github.com/Benji-clm/RISC-V-T15/commit/ad97162de5b1c71f993c772b9a73fb3a16d8e750), [2](https://github.com/Benji-clm/RISC-V-T15/commit/aba2028af67102549ae35e41be150653a83370d4), [3](https://github.com/Benji-clm/RISC-V-T15/commit/df277e353f138b83c96ba6e647286cab12ddd9dc)
 - Code Fixes: [1](https://github.com/Benji-clm/RISC-V-T15/commit/63812d48e99a931d67d628ff0fa7a5df072bb2cf), [2](https://github.com/Benji-clm/RISC-V-T15/commit/d25efc142985122da3d4e1366b1fbb54287fa423)
 - Putting Everything together: [1](https://github.com/Benji-clm/RISC-V-T15/commit/bb74ff7ef03d9c2cab7b17eb08a459dd336b08fa) 
-### Pipelined CPU
+## Pipelined CPU
 - Hazard-unit: [1](https://github.com/Benji-clm/RISC-V-T15/commit/0e0d4a209d03c5875ce934c43667723e10e488fe), [2](https://github.com/Benji-clm/RISC-V-T15/commit/8783fbc118c2a90af45cb9a639fcf49530c0f0cf)
 - Code Fixes: [1](https://github.com/Benji-clm/RISC-V-T15/commit/9e6a9c1e80707d42e04918ed637d0245e835421c), [2](https://github.com/Benji-clm/RISC-V-T15/commit/fedfc920902fe59581c8a9e72b1fbf01aaf273a5), [3](https://github.com/Benji-clm/RISC-V-T15/commit/19045937bf5562959d6f061f19cdb8bdd9debc96)
 - Testing: [1](https://github.com/Benji-clm/RISC-V-T15/commits/master/?author=Benji-clm&before=e72c5e5798d52fa4581719bda63147d18dabef57+35)
 - Assembling: [1](https://github.com/Benji-clm/RISC-V-T15/commit/9ffae0fb1289f4d89dc5e0f63161f9d38cc058aa)
-### [FPGA](https://github.com/Benji-clm/RISC-V-T15/blob/master/FPGA/FPGA.md)  (Separate .md file)
+## [FPGA](https://github.com/Benji-clm/RISC-V-T15/blob/master/FPGA/FPGA.md)  (Separate .md file)
 -  [1](https://github.com/Benji-clm/RISC-V-T15/commit/9a587a4e00443a855f6066ee4a99f27ca6a1ed6e)
-### Branch Prediction
+## Branch Prediction
 - Logic (rtl): [1](https://github.com/Benji-clm/RISC-V-T15/commit/e36187aa663fb4b33cac2d96841e65868ea45fa1)
 - Tests: [1](https://github.com/Benji-clm/RISC-V-T15/commit/5fae8dd4a018d1a6fd63d1fb05d7efb63422dac8)
 <br>
+
 ## **Single-Cycle CPU**
 
 The single-cycle CPU is a foundational implementation of the RISC-V architecture, executing one instruction per clock cycle. This section details my contributions to the design, testing, and verification of this CPU.
@@ -153,6 +154,8 @@ The testing framework (`gtest`) provides assertions (`EXPECT_EQ`) to validate th
 - **Ease of Testing**: Implemented a reusable `tick()` function to simulate clock cycles, simplifying the testing process for all modules. This approach ensures consistent simulation of rising and falling edges of the clock, reducing repetitive code and errors in testbenches.
 - **Modularity**: The `tick()` function encapsulates clock toggling logic, making it easier to integrate with different test scenarios and components.
 - **Efficiency**: Reduces boilerplate code in testbenches, allowing for more focused and streamlined test cases.
+<br>
+
 <br>
 
 ---
@@ -324,7 +327,11 @@ end
 Testing and debugging were crucial aspects of the development process, often requiring significant time and effort to track down the root cause of errors. Given the complexity of the control unit and its interactions with other modules, identifying issues involved rigorous testing and analysis. For instance, some bugs manifested as subtle misbehavior in branch instructions, which necessitated examining waveforms using **GTKWave** to pinpoint discrepancies in signal timing and values.  Debugging was a meticulous process, often requiring iteration between the testbench and the module design, but these efforts were vital for ensuring the robustness and reliability of the CPU.
 
 <br>
+
+<br>
+
 ---
+
 ## **Hazard Unit**
 
 The hazard unit is a critical component in the pipelined CPU, responsible for handling data hazards and control hazards to ensure correct program execution. It manages stalling, forwarding, and flushing signals to resolve hazards without breaking the sequential semantics of instructions.
@@ -429,7 +436,11 @@ Key commits for the hazard unit:
 -  [1](https://github.com/Benji-clm/RISC-V-T15/commit/0e0d4a209d03c5875ce934c43667723e10e488fe), [2](https://github.com/Benji-clm/RISC-V-T15/commit/8783fbc118c2a90af45cb9a639fcf49530c0f0cf)
 <br>
 
+
+<br>
+
 ---
+
 ## **Branch Prediction Unit**
 
 The branch prediction unit is a key performance-enhancing component in the pipelined CPU, reducing control hazards by predicting the outcome of branch instructions during the fetch stage. This module employs a **two-bit saturating counter** prediction strategy, combined with a **Branch History Table (BHT)** and a **Branch Target Buffer (BTB)**, to improve the accuracy of branch predictions.
@@ -565,7 +576,12 @@ end
 - **Simplicity and Efficiency**:
   - The use of saturating counters and a small, indexed BTB ensures low overhead while maintaining high prediction accuracy. 
 
+<br>
+
+<br>
+
 ---
+
 ## **Branch Prediction Unit Testing**
 
 Testing the branch prediction unit is essential to ensure its accuracy and performance in predicting branch outcomes and managing branch targets. The following testbench verifies the functionality of the unit by simulating various branch scenarios and checking the outputs against expected results.
@@ -688,7 +704,12 @@ TEST_F(BranchPredTestbench, BasicPredictionTest) {
 3. **Transition Behaviour**:
    - The two-bit counters in the BHT should transition gradually based on the branch outcomes.
 
+<br>
+
+<br>
+
 ---
+
 ## **Overall Assembly of the RISC-V CPU**
 
 The assembly of the RISC-V CPU integrates all the designed modules, creating a complete pipelined processor capable of executing RV32I base instructions. This section provides an overview of the assembly process, detailing the interaction between the pipeline stages, hazard resolution, and auxiliary units such as branch prediction and memory.
@@ -803,11 +824,23 @@ The assembly of the RISC-V CPU integrates all the designed modules, creating a c
 
 The overall assembly of the RISC-V CPU demonstrates a robust and efficient implementation of a pipelined processor. By integrating hazard resolution mechanisms, branch prediction, and memory management, the design achieves both correctness and performance. The modularity and scalability of the design ensure that it can be adapted for more complex architectures or instruction sets in the future. It was great fun working on this project, I learned so much and loved it!
 
+<br>
+
+<br>
+
+---
+
 ## What I learned
 
 Before this project, apart from the Labs, I had no experience in HDL, testing and FPGA. My only relevant experience was that of the RISCV ISA, which I had learned to create my own compiler over the summer. 
 
 After this project, I feel much more computer with computer architecture, hardware design, testing, and even hardware synthesis. Being on the testing side took a lot of patience and resilience, as sometimes, the source of bugs can be extremely difficult to track down, but it rewards a great feeling of achievement when you finally put your finger on it.
+
+<br>
+
+<br>
+
+---
 
 ## Reflection
 
