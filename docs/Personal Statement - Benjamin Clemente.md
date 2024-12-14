@@ -374,7 +374,7 @@ The hazard unit is designed to handle two types of hazards:
   end else begin 
       ForwardAE = 2'b00;
   end
-```
+    ```
 
 - **Stalling Logic**:
   - A stall occurs when a load-use hazard is detected. This happens when the result of a load instruction (`ResultSrcE`) is used by the next instruction (`Rs1D` or `Rs2D` match `RdE`).
