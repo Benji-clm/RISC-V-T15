@@ -4,13 +4,13 @@ module counter_module #(
     parameter DATA_WIDTH = 32
 )(
     // Interface signals
-    input logic [2:0] PCsrcE,                        // Select signal for MUX
-    input logic [DATA_WIDTH-1:0]  PCTargetE,    // Branch target address (PC + ImmExt)
-    input logic [DATA_WIDTH-1:0]  PCPlus4F,     // Incremented PC (PC + 4)
+    input logic [2:0] PCsrcE,
+    input logic [DATA_WIDTH-1:0]  PCTargetE,
+    input logic [DATA_WIDTH-1:0]  PCPlus4F,
     input logic [DATA_WIDTH-1:0]  ALUResult,
     input logic                   eq,
     input logic                   branch_predictE,
-    output logic [DATA_WIDTH-1:0] pc,    // Program Counter after clk
+    output logic [DATA_WIDTH-1:0] pc,
     output logic                  Hazard_PCsrc
 );
  

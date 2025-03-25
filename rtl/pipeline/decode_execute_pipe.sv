@@ -18,7 +18,7 @@ module decode_execute_pipe #(
     input  logic [DATA_WIDTH-1:0]   rd2,
     input  logic [DATA_WIDTH-1:0]   pcD,
     input  logic [DATA_WIDTH-1:0]   PCPlus4D,
-    input  logic [31:0]             ImmExtD,   //Imm operand extended from SignExtend.sv ImmExtD in scheme
+    input  logic [31:0]             ImmExtD,
     input  logic [4:0]              Rs1D,
     input  logic [4:0]              Rs2D,
     input  logic [4:0]              RdD,

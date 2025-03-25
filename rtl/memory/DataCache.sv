@@ -3,18 +3,18 @@ module DataCache #(
     parameter DATA_WIDTH = 32
 )(
     input logic clk,
-    input logic we,                     // Write enable
+    input logic we,
     input logic [2:0] LS_mode,
     input logic MemRead,
-    input logic [ADDR_WIDTH-1:0] a,     // Address
-    input logic [DATA_WIDTH-1:0] wd,    // Write data
+    input logic [ADDR_WIDTH-1:0] a,
+    input logic [DATA_WIDTH-1:0] wd,
 
-    output logic [DATA_WIDTH-1:0] rd    // Read data
+    output logic [DATA_WIDTH-1:0] rd
 );
 
 typedef struct packed {
     logic valid_bit;
-    logic [27:0] tag_bits;   // 28-bit tag for a[31:4]
+    logic [27:0] tag_bits;
     logic [7:0]  byte3;
     logic [7:0]  byte2;
     logic [7:0]  byte1;
@@ -23,7 +23,7 @@ typedef struct packed {
 
 // Two-way set associative:
 // 2 ways, with 4 sets total
-cache_line cache_mem[2][4];  // cache_mem[way][index]
+cache_line cache_mem[2][4];
 
 logic [DATA_WIDTH-1:0] temp_rd;
 logic [27:0] address_tag;
@@ -31,14 +31,14 @@ logic [1:0]  cache_index;
 logic [1:0]  byte_offset;
 
 logic hit_way0, hit_way1;
-logic hit_way;   // Which way hit: 0 or 1
-logic hit;       // Did we get a hit in any way?
+logic hit_way;
+logic hit;
 
 // Calculate tag, index, offset
 always_comb begin
-    address_tag = a[31:4];    // 28-bit tag
-    cache_index = a[3:2];     // 4 sets => 2 bits
-    byte_offset = a[1:0];     // 4-byte line => 2 offset bits
+    address_tag = a[31:4];
+    cache_index = a[3:2];
+    byte_offset = a[1:0];
 
     // Check both ways for a hit
     hit_way0 = cache_mem[0][cache_index].valid_bit && (cache_mem[0][cache_index].tag_bits == address_tag);

@@ -52,7 +52,7 @@ always_comb begin
                 2'b10: begin
                     rd = {{16{byte3[7]}}, byte3, byte2};
                 end
-                default: begin // not aligned
+                default: begin
                     $error("Misaligned halfword write detected!");
                 end
             endcase

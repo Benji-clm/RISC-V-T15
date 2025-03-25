@@ -5,7 +5,7 @@ module i_mem #(
     output  logic [DATA_WIDTH-1:0]      instr    
 );
  
-logic [7:0] array [32'hBFC00FFF:32'hBFC00000]; // Byte-addressable memory
+logic [7:0] array [32'hBFC00FFF:32'hBFC00000];
  
 initial begin
         $display("Loading program into instruction memory...");

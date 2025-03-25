@@ -317,13 +317,13 @@ execute_mem_pipe #(DATA_WIDTH) pipeline_EM(
     .MemReadE(MemReadE),
 
     // Outputs to MEM stage
-    .ALUResultM(ALUResultM),         // ALU result to MEM stage
-    .WriteDataM(WriteDataM),         // Write data to MEM stage
-    .PCPlus4M(PCPlus4M),                // Data memory address to MEM stage
-    .MemWriteM(MemWriteM),           // Memory write enable to MEM stage
-    .ResultSrcM(ResultSrcM),           // Memory read enable to MEM stage (mapped from ResultSrcM)
-    .LS_modeM(LS_modeM),                 // Function control (if used, map appropriately)
-    .RdM(RdM),                   // Register destination to MEM stage
+    .ALUResultM(ALUResultM),
+    .WriteDataM(WriteDataM),
+    .PCPlus4M(PCPlus4M),
+    .MemWriteM(MemWriteM),
+    .ResultSrcM(ResultSrcM),
+    .LS_modeM(LS_modeM),
+    .RdM(RdM),
     .RegWriteM(RegWriteM),
     .MemReadM(MemReadM)
 );
@@ -339,20 +339,20 @@ top_mem top_memory_inst (
     );
 
 mem_writeback_pipe #(DATA_WIDTH) pipeline_MW_inst(
-    .clk(clk),                          // Clock signal
+    .clk(clk),
 
     // Inputs from MEM stage
-    .ALUResultM(ALUResultM),        // ALU result from MEM stage
-    .PCPlus4M(PCPlus4M),            // Memory data or equivalent, assuming PCPlus4M is used here as memory data
-    .RdM(RdM),                 // Register destination from MEM stage
-    .RegWriteM(RegWriteM),          // Register write enable from MEM stage
+    .ALUResultM(ALUResultM),
+    .PCPlus4M(PCPlus4M),
+    .RdM(RdM),
+    .RegWriteM(RegWriteM),
     .rd(rd),
     .ResultSrcM(ResultSrcM),
 
     // Outputs to WB stage
-    .ALUResultW(ALUResultW),               // Data to write back to the register file
-    .RdW(RdW),                  // Register destination to WB stage
-    .RegWriteW(RegWriteW),            // Register write enable to WB stage
+    .ALUResultW(ALUResultW),
+    .RdW(RdW),
+    .RegWriteW(RegWriteW),
     .PCPlus4W(PCPlus4W),
     .ReadDataW(ReadDataW),
     .ResultSrcW(ResultSrcW)

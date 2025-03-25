@@ -18,7 +18,7 @@ module datamem #(
         $readmemh("../tb/data.hex", array, 32'h10000);
     end
  
-// Read logic with extension
+    // Read logic with extension
     always_ff @* begin
         rd = {
             array[{a[16:2], 2'b11}],
@@ -28,9 +28,9 @@ module datamem #(
         };
     end
  
-        // Read and write operations
+    // Read and write operations
     always_ff @(posedge clk) begin
-        if (we && LS_mode == 3'b01x) begin // Write only least significant byte (8 bits)
+        if (we && LS_mode == 3'b01x) begin
             array[a] <= wd[7:0];
         end
  

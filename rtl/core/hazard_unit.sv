@@ -67,6 +67,4 @@ always_comb begin
     Flush = Hazard_PCsrc;
 end
 
-
-
 endmodule

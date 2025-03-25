@@ -1,8 +1,8 @@
 module i_cache #(
     parameter DATA_WIDTH = 32,
-    parameter CACHE_SIZE = 256, // Number of cache sets
-    parameter LINE_SIZE = 4,    // Number of instructions per cache line
-    parameter ASSOC = 2,        // Associativity (number of ways)
+    parameter CACHE_SIZE = 256,
+    parameter LINE_SIZE = 4,
+    parameter ASSOC = 2,
     parameter ADDR_WIDTH = 32
 ) (
     input  logic                     clk,
@@ -13,15 +13,15 @@ module i_cache #(
 
     // Cache line structure
     typedef struct packed {
-        logic                        valid;  // Valid bit
-        logic [ADDR_WIDTH-$clog2(CACHE_SIZE*LINE_SIZE)-1:0] tag; // Tag
-        logic [DATA_WIDTH*LINE_SIZE-1:0] data; // Cache line data
+        logic                        valid;
+        logic [ADDR_WIDTH-$clog2(CACHE_SIZE*LINE_SIZE)-1:0] tag;
+        logic [DATA_WIDTH*LINE_SIZE-1:0] data;
     } cache_line_t;
 
     // Cache set structure
     typedef struct packed {
-        cache_line_t [ASSOC-1:0] ways; // Associative ways
-        logic [ASSOC-1:0] lru;         // LRU bits
+        cache_line_t [ASSOC-1:0] ways;
+        logic [ASSOC-1:0] lru;
     } cache_set_t;
 
     // Cache memory
@@ -40,7 +40,7 @@ module i_cache #(
     assign index = pc[$clog2(CACHE_SIZE)-1:0];
     assign tag = pc[ADDR_WIDTH-1:$clog2(CACHE_SIZE*LINE_SIZE)];
     assign block_offset = pc[$clog2(LINE_SIZE)-1:0];
-    assign aligned_pc = pc & ~($clog2(LINE_SIZE)-1); // Align PC to cache line boundary
+    assign aligned_pc = pc & ~($clog2(LINE_SIZE)-1);
 
     // i_mem instance
     i_mem #(DATA_WIDTH) mem_inst (
@@ -51,7 +51,7 @@ module i_cache #(
     // Drive mem_data (fetch multiple instructions for a cache line)
     always_comb begin
         for (int i = 0; i < LINE_SIZE; i++) begin
-            mem_data[(i*DATA_WIDTH) +: DATA_WIDTH] = mem_instr; // Simplified for single-instruction i_mem
+            mem_data[(i*DATA_WIDTH) +: DATA_WIDTH] = mem_instr;
         end
     end
 
