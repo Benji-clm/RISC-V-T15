@@ -8,7 +8,7 @@
 
 ## Personal Statements
 - [Personal Statement Augustin Briens](https://github.com/Benji-clm/RISC-V-T15/blob/master/docs/Personal%20Statement%20Augustin%20Briens.md)
-- Personal Statement Benjamin Clemente
+- [Personal Statement Benjamin Clemente](https://github.com/Benji-clm/RISC-V-T15/blob/master/docs/Personal%20Statement%20-%20Benjamin%20Clemente.md)
 - [Personal Statement Selime Ozyurt](docs/Personal%20Statement%20Selime%20Ozyurt.md)
 - [Personal Statement Alix Le Coguic](https://github.com/Benji-clm/RISC-V-T15/blob/master/docs/Personal%20Statement%20Alix%20Le%20Coguic.md)
 
@@ -16,7 +16,7 @@
 - [Single Cycle](#single-cycle)
   - [Program-Counter](docs/Personal%20Statement%20Selime%20Ozyurt.md#program-counter-block) (Selime Nur Ozyurt)
   - [Register-File](docs/Personal%20Statement%20Selime%20Ozyurt.md#register-file)
-  - F1 Program (Benjamin Clemente, Alix Le Coguic)
+  - [F1 Program](#f1-program) (Benjamin Clemente, Alix Le Coguic)
   - [Instruction Memory](#instruction-memory) (Selime Ozyurt, Augustin Briens)
   - [ALU](#alu) (Augustin Briens)
   - [Data Memory](#data-memory) (Alix Le Coguic)   
