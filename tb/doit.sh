@@ -6,10 +6,12 @@
 # Constants
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 TEST_FOLDER=$(realpath "$SCRIPT_DIR/tests")
-RTL_FOLDER=$(realpath "$SCRIPT_DIR/../rtl")
+# RTL_FOLDER=$(realpath "$SCRIPT_DIR/../rtl")
 GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 RESET=$(tput sgr0)
+
+source "$SCRIPT_DIR/common.sh"
 
 # Variables
 passes=0
@@ -44,13 +46,13 @@ for file in "${files[@]}"; do
     fi
 
     # Translate Verilog -> C++ including testbench
-    verilator   -Wall --trace \
-                -cc ${RTL_FOLDER}/${name}.sv \
-                --exe ${file} \
-                -y ${RTL_FOLDER} \
-                --prefix "Vdut" \
-                -o Vdut \
-                -LDFLAGS "-lgtest -lgtest_main -lpthread"
+    verilator -Wall --trace \
+            -cc ${RTL_FOLDER}/${name}.sv \
+            --exe "${file}" \
+            ${RTL_Y_FLAGS} \
+            --prefix "Vdut" \
+            -o Vdut \
+            -LDFLAGS "-lgtest -lgtest_main -lpthread"
 
     # Build C++ project with automatically generated Makefile
     make -j -C obj_dir/ -f Vdut.mk
